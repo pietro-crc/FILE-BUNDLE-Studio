@@ -42,15 +42,15 @@ function targetDimensions(width: number, height: number, policy: ImagePolicy): {
 
 function renderImageMarkdown(asset: ImageAsset): string {
   return [
-    '### Immagine',
+    '### Image',
     '',
-    `- Formato originale: ${asset.originalMime}`,
-    `- Dimensioni originali: ${asset.width} × ${asset.height} px`,
-    `- Orientamento EXIF/TIFF: ${asset.orientation}`,
-    `- Trasparenza rilevata: ${asset.hasTransparency ? 'sì' : 'no'}`,
-    `- Animazione rilevata: ${asset.animated ? 'sì — nel PDF viene usato solo il primo frame' : 'no'}`,
-    `- Rappresentazione PDF: ${asset.embeddedMime ? `${asset.outputWidth} × ${asset.outputHeight} px, ${asset.embeddedMime}` : 'non disponibile'}`,
-    `- Downsampling: ${asset.downsampled ? 'applicato' : 'non necessario'}`,
+    `- Original format: ${asset.originalMime}`,
+    `- Original dimensions: ${asset.width} × ${asset.height} px`,
+    `- EXIF/TIFF orientation: ${asset.orientation}`,
+    `- Transparency detected: ${asset.hasTransparency ? 'yes' : 'no'}`,
+    `- Animation detected: ${asset.animated ? 'yes - only the first frame is used in the PDF' : 'no'}`,
+    `- PDF representation: ${asset.embeddedMime ? `${asset.outputWidth} × ${asset.outputHeight} px, ${asset.embeddedMime}` : 'unavailable'}`,
+    `- Downsampling: ${asset.downsampled ? 'applied' : 'not required'}`,
   ].join('\n')
 }
 
@@ -69,19 +69,19 @@ export async function extractImageFile(
   decoder: ImageDecoder = decodeImageToPng,
 ): Promise<ExtractedImageFile> {
   const policy = validatePolicy(overrides)
-  if (file.size > policy.maxImageBytes) throw new RangeError(`Immagine oltre il limite di ${policy.maxImageBytes} byte.`)
-  if (manifestFile.mimeDetected === 'image/svg+xml') throw new Error('SVG attivo non renderizzato prima della sanitizzazione prevista nello STEP-008/009.')
+  if (file.size > policy.maxImageBytes) throw new RangeError(`Image exceeds the ${policy.maxImageBytes}-byte limit.`)
+  if (manifestFile.mimeDetected === 'image/svg+xml') throw new Error('Active SVG is not rendered before the sanitization required by STEP-008/009.')
   const bytes = new Uint8Array(await file.bytes.read(signal))
   const sha256 = await sha256Hex(bytes)
   const metadata = inspectImageBytes(bytes, manifestFile.mimeDetected)
-  if (metadata.megapixels > policy.maxMegapixels) throw new RangeError(`Immagine da ${metadata.megapixels.toFixed(2)} MP oltre il limite di ${policy.maxMegapixels} MP.`)
-  if (Math.max(metadata.width, metadata.height) > policy.maxDimension) throw new RangeError(`Dimensione immagine oltre il limite di ${policy.maxDimension} px.`)
+  if (metadata.megapixels > policy.maxMegapixels) throw new RangeError(`Image is ${metadata.megapixels.toFixed(2)} MP, above the ${policy.maxMegapixels} MP limit.`)
+  if (Math.max(metadata.width, metadata.height) > policy.maxDimension) throw new RangeError(`Image dimensions exceed the ${policy.maxDimension}-px limit.`)
 
   const oriented = orientedDimensions(metadata.width, metadata.height, metadata.orientation)
   const target = targetDimensions(oriented.width, oriented.height, policy)
   const directEmbed = !target.downsampled && metadata.orientation === 1 && (metadata.mime === 'image/png' || metadata.mime === 'image/jpeg')
   const warnings: string[] = []
-  if (metadata.animated) warnings.push('Immagine animata: la rappresentazione PDF usa soltanto il primo frame.')
+  if (metadata.animated) warnings.push('Animated image: the PDF representation uses only the first frame.')
   let outputBytes: Uint8Array | null = null
   let embeddedMime: 'image/png' | 'image/jpeg' | null = null
   let status: 'completed' | 'partial' = 'completed'
@@ -93,11 +93,11 @@ export async function extractImageFile(
     try {
       outputBytes = await decoder({ bytes, mime: metadata.mime, outputWidth: target.width, outputHeight: target.height }, signal)
       embeddedMime = 'image/png'
-      if (target.downsampled) warnings.push(`Immagine ridimensionata a ${target.width} × ${target.height} px per il PDF derivato.`)
-      if (metadata.orientation !== 1) warnings.push(`Orientamento ${metadata.orientation} corretto durante la conversione browser-native.`)
+      if (target.downsampled) warnings.push(`Image resized to ${target.width} × ${target.height} px for the derived PDF.`)
+      if (metadata.orientation !== 1) warnings.push(`Orientation ${metadata.orientation} corrected during browser-native conversion.`)
     } catch (error) {
       status = 'partial'
-      warnings.push(error instanceof Error ? `Preview visuale non disponibile: ${error.message}` : 'Preview visuale non disponibile.')
+      warnings.push(error instanceof Error ? `Visual preview unavailable: ${error.message}` : 'Visual preview unavailable.')
     }
   }
 

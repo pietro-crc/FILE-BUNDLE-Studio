@@ -29,8 +29,8 @@ interface PreparedEntry {
 
 function validatePolicy(overrides?: Partial<DocumentsPolicy>): DocumentsPolicy {
   const policy = { ...DEFAULT_DOCUMENTS_POLICY, ...overrides }
-  if (!Number.isSafeInteger(policy.maxOutputPages) || policy.maxOutputPages < 4) throw new RangeError('maxOutputPages deve essere almeno 4.')
-  if (!Number.isSafeInteger(policy.indexEntriesPerPage) || policy.indexEntriesPerPage < 1) throw new RangeError('indexEntriesPerPage deve essere positivo.')
+  if (!Number.isSafeInteger(policy.maxOutputPages) || policy.maxOutputPages < 4) throw new RangeError('maxOutputPages must be at least 4.')
+  if (!Number.isSafeInteger(policy.indexEntriesPerPage) || policy.indexEntriesPerPage < 1) throw new RangeError('indexEntriesPerPage must be positive.')
   return policy
 }
 
@@ -49,18 +49,38 @@ function crop(value: string, max: number): string {
   return normalized.length <= max ? normalized : `${normalized.slice(0, Math.max(0, max - 3))}...`
 }
 
-function wrap(value: string, maxCharacters: number): string[] {
-  const words = pdfSafe(value).replaceAll(/\s+/gu, ' ').trim().split(' ').filter(Boolean)
+function wrapToWidth(value: string, font: PDFFont, size: number, maxWidth: number): string[] {
   const lines: string[] = []
-  let current = ''
-  for (const word of words) {
-    const next = current.length === 0 ? word : `${current} ${word}`
-    if (next.length > maxCharacters && current.length > 0) {
-      lines.push(current)
-      current = word
-    } else current = next
+  const paragraphs = pdfSafe(value).replaceAll('\r\n', '\n').replaceAll('\r', '\n').split('\n')
+  for (const paragraph of paragraphs) {
+    const words = paragraph.replaceAll(/\s+/gu, ' ').trim().split(' ').filter(Boolean)
+    if (words.length === 0) {
+      lines.push('')
+      continue
+    }
+    let current = ''
+    for (const word of words) {
+      let remaining = word
+      while (remaining.length > 0) {
+        const candidate = current.length === 0 ? remaining : `${current} ${remaining}`
+        if (font.widthOfTextAtSize(candidate, size) <= maxWidth) {
+          current = candidate
+          remaining = ''
+          continue
+        }
+        if (current.length > 0) {
+          lines.push(current)
+          current = ''
+          continue
+        }
+        let splitAt = remaining.length
+        while (splitAt > 1 && font.widthOfTextAtSize(remaining.slice(0, splitAt), size) > maxWidth) splitAt -= 1
+        lines.push(remaining.slice(0, splitAt))
+        remaining = remaining.slice(splitAt)
+      }
+    }
+    if (current.length > 0) lines.push(current)
   }
-  if (current.length > 0) lines.push(current)
   return lines.length > 0 ? lines : ['']
 }
 
@@ -89,10 +109,16 @@ function pageRecord(page: PDFPage, outputPage: number, kind: DocumentsPageRecord
 
 function drawHeaderPage(document: PDFDocument, font: PDFFont, title: string, subtitle: string, label: string): PDFPage {
   const page = document.addPage([595.28, 841.89])
-  const { height } = page.getSize()
+  const { width, height } = page.getSize()
+  const contentWidth = width - 96
+  const titleSize = 24
+  const titleLineHeight = 30
+  const titleLines = wrapToWidth(title, font, titleSize, contentWidth)
+  const subtitleLines = wrapToWidth(subtitle, font, 11, contentWidth)
   page.drawText(pdfSafe(label.toUpperCase()), { x: 48, y: height - 64, size: 9, font })
-  drawLines(page, font, wrap(title, 54), 48, height - 110, 24, 30)
-  drawLines(page, font, wrap(subtitle, 82), 48, height - 210, 11, 17)
+  drawLines(page, font, titleLines, 48, height - 110, titleSize, titleLineHeight)
+  const subtitleY = height - 110 - titleLines.length * titleLineHeight - 18
+  drawLines(page, font, subtitleLines, 48, subtitleY, 11, 17)
   return page
 }
 
@@ -102,19 +128,19 @@ function drawSeparator(document: PDFDocument, font: PDFFont, entry: PreparedEntr
     document,
     font,
     file.originalPath,
-    `Tipo rilevato: ${file.mimeDetected}\nDimensione: ${file.size} byte\nSHA-256: ${file.integrity.value ?? 'pending'}\nStato visuale: ${entry.status}`,
-    'Separatore file',
+    `Detected type: ${file.mimeDetected}\nSize: ${file.size} bytes\nSHA-256: ${file.integrity.value ?? 'pending'}\nVisual status: ${entry.status}`,
+    'File separator',
   )
   const { height } = page.getSize()
   let y = height - 320
   for (const warning of entry.warnings.slice(0, 8)) {
-    y = drawLines(page, font, wrap(`Avviso: ${warning}`, 82), 48, y, 9, 14) - 4
+    y = drawLines(page, font, wrapToWidth(`Warning: ${warning}`, font, 9, page.getWidth() - 96), 48, y, 9, 14) - 4
   }
   return page
 }
 
 function drawErrorPage(document: PDFDocument, font: PDFFont, entry: PreparedEntry): PDFPage {
-  return drawHeaderPage(document, font, 'Rappresentazione visuale non disponibile', entry.error ?? 'Il file non è stato rappresentato nel PDF.', entry.file.originalPath)
+  return drawHeaderPage(document, font, 'Visual representation unavailable', entry.error ?? 'The file could not be represented in the PDF.', entry.file.originalPath)
 }
 
 function drawImagePage(document: PDFDocument, font: PDFFont, entry: PreparedEntry): PDFPage {
@@ -136,7 +162,7 @@ function drawImagePage(document: PDFDocument, font: PDFFont, entry: PreparedEntr
 }
 
 async function preparePdfEntry(output: PDFDocument, file: ManifestFileRecord, asset: PdfDocumentAsset | undefined): Promise<PreparedEntry> {
-  if (!asset) return { file, adapterId: 'pdf', warnings: [], error: 'Estrazione PDF non riuscita o documento cifrato.', kind: 'pdf', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
+  if (!asset) return { file, adapterId: 'pdf', warnings: [], error: 'PDF extraction failed or the document is encrypted.', kind: 'pdf', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
   try {
     const { PDFDocument } = await import('pdf-lib')
     const source = await PDFDocument.load(asset.bytes, { ignoreEncryption: false, updateMetadata: false })
@@ -154,18 +180,18 @@ async function preparePdfEntry(output: PDFDocument, file: ManifestFileRecord, as
       status: asset.status === 'partial' ? 'partial' : 'completed',
     }
   } catch (error) {
-    return { file, adapterId: 'pdf', warnings: [...asset.warnings], error: error instanceof Error ? error.message : 'Importazione pagine PDF non riuscita.', kind: 'pdf', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
+    return { file, adapterId: 'pdf', warnings: [...asset.warnings], error: error instanceof Error ? error.message : 'PDF page import failed.', kind: 'pdf', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
   }
 }
 
 async function prepareImageEntry(output: PDFDocument, file: ManifestFileRecord, asset: ImageAsset | undefined): Promise<PreparedEntry> {
-  if (!asset) return { file, adapterId: 'image', warnings: [], error: 'Metadati o decodifica immagine non disponibili.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
-  if (!asset.bytes || !asset.embeddedMime) return { file, adapterId: asset.adapterId, warnings: [...asset.warnings], error: 'Il browser non ha prodotto una rappresentazione PNG/JPEG sicura.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'partial' }
+  if (!asset) return { file, adapterId: 'image', warnings: [], error: 'Image metadata or decoding is unavailable.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
+  if (!asset.bytes || !asset.embeddedMime) return { file, adapterId: asset.adapterId, warnings: [...asset.warnings], error: 'The browser could not produce a safe PNG/JPEG representation.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'partial' }
   try {
     const image = asset.embeddedMime === 'image/png' ? await output.embedPng(asset.bytes) : await output.embedJpg(asset.bytes)
     return { file, adapterId: asset.adapterId, warnings: [...asset.warnings], error: null, kind: 'image', pages: [], image, sourcePageNumbers: [1], status: asset.status === 'partial' ? 'partial' : 'completed' }
   } catch (error) {
-    return { file, adapterId: asset.adapterId, warnings: [...asset.warnings], error: error instanceof Error ? error.message : 'Embedding immagine non riuscito.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
+    return { file, adapterId: asset.adapterId, warnings: [...asset.warnings], error: error instanceof Error ? error.message : 'Image embedding failed.', kind: 'image', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
   }
 }
 
@@ -272,7 +298,7 @@ function fitEntriesToPageBudget(
         pages: entry.pages.slice(0, allowed),
         sourcePageNumbers: entry.sourcePageNumbers.slice(0, allowed),
         status: 'partial',
-        warnings: [...entry.warnings, `Rappresentazione PDF limitata a ${allowed} pagine dal budget globale.`],
+        warnings: [...entry.warnings, `PDF representation limited to ${allowed} pages by the global budget.`],
       })
       contentPages += allowed
       limited = true
@@ -285,7 +311,7 @@ function fitEntriesToPageBudget(
 
   return {
     entries: selected,
-    warning: limited ? `Output limitato a ${policy.maxOutputPages} pagine; alcuni file o pagine non sono rappresentati.` : null,
+    warning: limited ? `Output limited to ${policy.maxOutputPages} pages; some files or pages are not represented.` : null,
   }
 }
 
@@ -327,9 +353,9 @@ export async function renderDocumentsPdf(
   const pageRecords: DocumentsPageRecord[] = []
   const fileRecords: DocumentsFileRecord[] = []
 
-  const cover = drawHeaderPage(document, font, manifestArtifact.manifest.projectName, 'Pacchetto visuale generato interamente nel browser. Consulta il manifest JSON come indice autorevole e il Markdown per testo, codice e tabelle.', 'AI Bundle Studio')
+  const cover = drawHeaderPage(document, font, manifestArtifact.manifest.projectName, 'Visual package generated entirely in the browser. Use the JSON manifest as the authoritative index and Markdown for text, code, and tables.', 'AI Bundle Studio')
   pageRecords.push(pageRecord(cover, document.getPageCount(), 'cover', null, null, null))
-  const instructions = drawHeaderPage(document, font, 'Istruzioni per l’assistente AI', 'Usa sempre i percorsi originali. Non assumere contenuti esclusi. Le pagine PDF originali sono copiate senza rasterizzazione quando possibile; immagini, fogli e documenti Office sono rappresentazioni derivate con limiti dichiarati.', 'Uso del pacchetto')
+  const instructions = drawHeaderPage(document, font, 'Instructions for the AI assistant', 'Always use the original paths. Do not assume excluded content. Original PDF pages are copied without rasterization where possible; images, spreadsheets, and Office documents are derived representations with declared limits.', 'Package usage')
   pageRecords.push(pageRecord(instructions, document.getPageCount(), 'instructions', null, null, null))
 
   const startPages = new Map<string, number>()
@@ -340,7 +366,7 @@ export async function renderDocumentsPdf(
   })
   for (let index = 0; index < indexPages; index += 1) {
     const page = document.addPage([595.28, 841.89])
-    page.drawText('Indice visuale', { x: 48, y: 790, size: 20, font })
+    page.drawText('Visual index', { x: 48, y: 790, size: 20, font })
     const slice = entries.slice(index * policy.indexEntriesPerPage, (index + 1) * policy.indexEntriesPerPage)
     let y = 755
     slice.forEach((entry) => {
@@ -400,7 +426,7 @@ export async function renderDocumentsPdf(
 
   const excluded = manifestArtifact.manifest.files.filter((file) => !file.inclusion.included).length
   const unrepresented = manifestArtifact.manifest.files.filter((file) => file.inclusion.included && !fileRecords.some((record) => record.fileId === file.fileId)).length
-  const report = drawHeaderPage(document, font, 'Report finale', `File esclusi: ${excluded}\nFile inclusi senza rappresentazione visuale nello STEP-009: ${unrepresented}\nErrori visuali isolati: ${fileRecords.filter((record) => record.status === 'failed').length}`, 'Completezza')
+  const report = drawHeaderPage(document, font, 'Final report', `Excluded files: ${excluded}\nIncluded files without a visual representation in STEP-009: ${unrepresented}\nIsolated visual errors: ${fileRecords.filter((record) => record.status === 'failed').length}`, 'Completeness')
   pageRecords.push(pageRecord(report, document.getPageCount(), 'report', null, null, null))
 
   document.setTitle(`${pdfSafe(manifestArtifact.manifest.projectName)} - documents`)

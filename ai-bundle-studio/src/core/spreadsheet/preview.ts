@@ -40,7 +40,7 @@ export function createSpreadsheetPreviewPages(workbook: SpreadsheetWorkbook, pol
           landscape: columnEnd - columnStart + 1 > 7,
           headings: ['Riga', ...Array.from({ length: columnEnd - columnStart + 1 }, (_, offset) => columnLettersFromIndex(columnStart + offset))],
           rows: buildPageRows(sheet, rowStart, rowEnd, columnStart, columnEnd),
-          warnings: sheet.truncated ? ['Foglio rappresentato parzialmente secondo i limiti configurati.'] : [],
+          warnings: sheet.truncated ? ['Sheet partially represented according to the configured limits.'] : [],
         })
       }
     }
@@ -54,7 +54,7 @@ function drawPage(page: ReturnType<PDFDocument['addPage']>, preview: Spreadsheet
   const titleSize = 12
   const bodySize = 7
   page.drawText(crop(`${preview.workbookPath} · ${preview.sheetName}`, 90), { x: margin, y: height - margin, size: titleSize, font })
-  page.drawText(`Righe ${preview.rowStart}-${preview.rowEnd} · colonne ${columnLettersFromIndex(preview.columnStart)}-${columnLettersFromIndex(preview.columnEnd)}`, {
+  page.drawText(`Rows ${preview.rowStart}-${preview.rowEnd} · columns ${columnLettersFromIndex(preview.columnStart)}-${columnLettersFromIndex(preview.columnEnd)}`, {
     x: margin,
     y: height - margin - 16,
     size: 8,
@@ -75,7 +75,7 @@ function drawPage(page: ReturnType<PDFDocument['addPage']>, preview: Spreadsheet
       page.drawText(crop(value, Math.max(6, Math.floor(cellWidth / 4.2))), { x: x + 2, y: y - 9, size: bodySize, font })
     })
   })
-  page.drawText(`Anteprima derivata · pagina ${preview.pageNumber}`, { x: margin, y: 14, size: 7, font, color: rgb(0.35, 0.35, 0.35) })
+  page.drawText(`Derived preview · page ${preview.pageNumber}`, { x: margin, y: 14, size: 7, font, color: rgb(0.35, 0.35, 0.35) })
 }
 
 export async function renderSpreadsheetPreviewPdf(
@@ -91,7 +91,7 @@ export async function renderSpreadsheetPreviewPdf(
   }
   if (pages.length === 0) {
     const page = document.addPage([595.28, 841.89])
-    page.drawText('Nessun foglio rappresentabile nella preview spreadsheet.', { x: 40, y: 790, size: 12, font })
+    page.drawText('No renderable sheet is available in the spreadsheet preview.', { x: 40, y: 790, size: 12, font })
   }
   document.setTitle('AI Bundle Studio · Spreadsheet preview')
   document.setProducer('AI Bundle Studio')
@@ -103,6 +103,6 @@ export async function renderSpreadsheetPreviewPdf(
     byteLength: bytes.byteLength,
     pageCount: document.getPageCount(),
     pages,
-    warnings: ['Preview PDF derivata: non replica layout, grafici, pivot o formattazione completa del workbook originale.'],
+    warnings: ['Derived PDF preview: it does not reproduce the original workbook layout, charts, pivots, or complete formatting.'],
   }
 }

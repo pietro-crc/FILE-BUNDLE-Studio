@@ -72,7 +72,7 @@ async function renderDocx(
   const lines = wrap(asset.plainText || asset.markdown)
   const chunks = Array.from({ length: Math.max(1, Math.ceil(lines.length / 46)) }, (_, index) => lines.slice(index * 46, (index + 1) * 46))
   for (let index = 0; index < chunks.length && pages.length < pageBudget; index += 1) {
-    pages.push(drawTextPage(document, font, asset.path, `DOCX derivato · pagina semantica ${index + 1}/${chunks.length} · resa non identica a Word`, chunks[index] ?? []))
+    pages.push(drawTextPage(document, font, asset.path, `Derived DOCX · semantic page ${index + 1}/${chunks.length} · rendering differs from Word`, chunks[index] ?? []))
   }
   for (const image of asset.images) {
     if (pages.length >= pageBudget) break
@@ -103,8 +103,8 @@ async function renderPptx(
   for (const slide of asset.slides) {
     if (pages.length >= pageBudget) break
     const page = document.addPage([960, 540])
-    page.drawText(safe(`Slide ${slide.slideNumber}: ${slide.title || 'Senza titolo'}`).slice(0, 105), { x: 42, y: 492, size: 20, font })
-    page.drawText('Resa PPTX semplificata: testo, note e media estraibili; layout/animazioni non fedeli.', { x: 42, y: 470, size: 8, font })
+    page.drawText(safe(`Slide ${slide.slideNumber}: ${slide.title || 'Untitled'}`).slice(0, 105), { x: 42, y: 492, size: 20, font })
+    page.drawText('Simplified PPTX rendering: extractable text, notes, and media; layout and animations are not reproduced faithfully.', { x: 42, y: 470, size: 8, font })
     const firstImage = slide.images.find((image) => image.bytes && (image.mime === 'image/png' || image.mime === 'image/jpeg'))
     // eslint-disable-next-line no-await-in-loop -- Una sola immagine per slide limita la memoria.
     const embedded = firstImage ? await embedImage(document, firstImage) : null
@@ -115,7 +115,7 @@ async function renderPptx(
       y -= 16
     }
     if (slide.notes.length > 0) {
-      page.drawText('Note relatore:', { x: 42, y: Math.max(90, y - 8), size: 9, font })
+      page.drawText('Speaker notes:', { x: 42, y: Math.max(90, y - 8), size: 9, font })
       y = Math.max(70, y - 24)
       for (const line of wrap(slide.notes.join('\n'), textWidth).slice(0, 7)) {
         page.drawText(safe(line), { x: 42, y, size: 8, font })
@@ -165,9 +165,9 @@ export async function renderOfficePreviewPdf(assets: readonly OfficeAsset[], pol
       void page
     })
     remaining -= rendered.pages.length
-    if (rendered.truncated) warnings.push(`Preview Office di ${asset.path} troncata dal limite globale di ${policy.maxPreviewPages} pagine.`)
+    if (rendered.truncated) warnings.push(`Office preview for ${asset.path} was truncated by the global limit of ${policy.maxPreviewPages} pages.`)
   }
-  if (assets.some((asset) => !records.some((page) => page.fileId === asset.fileId))) warnings.push(`Preview Office limitata a ${policy.maxPreviewPages} pagine; uno o più documenti non sono stati rappresentati.`)
+  if (assets.some((asset) => !records.some((page) => page.fileId === asset.fileId))) warnings.push(`Office preview limited to ${policy.maxPreviewPages} pages; one or more documents were not represented.`)
   const bytes = await document.save({ useObjectStreams: true, addDefaultPage: false, updateFieldAppearances: false })
   return { mediaType: 'application/pdf', bytes, byteLength: bytes.byteLength, pageCount: document.getPageCount(), pages: records, warnings }
 }

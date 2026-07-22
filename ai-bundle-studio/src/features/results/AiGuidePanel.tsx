@@ -1,4 +1,11 @@
-export function AiGuidePanel() {
+import { Button } from '../../ui/Button'
+import { FilesIcon } from '../../ui/icons'
+
+interface AiGuidePanelProps {
+  readonly onOpenOutputs: () => void
+}
+
+export function AiGuidePanel({ onOpenOutputs }: AiGuidePanelProps) {
   return (
     <section className="ai-guide-panel" aria-labelledby="ai-guide-title">
       <header className="ai-guide-panel__header">
@@ -9,6 +16,9 @@ export function AiGuidePanel() {
           </h2>
         </div>
 
+        <Button className="guide-output-explorer-btn" onClick={onOpenOutputs} variant="primary">
+          <FilesIcon /> View generated outputs
+        </Button>
       </header>
 
       <div className="ai-guide-card">
@@ -18,7 +28,7 @@ export function AiGuidePanel() {
             <div className="step-content">
               <strong>Download your bundle</strong>
               <p>
-                Download the <code>.ZIP</code> package or use the single output files below.
+                Download the <code>.ZIP</code> package or open the output explorer for individual files.
               </p>
             </div>
           </div>

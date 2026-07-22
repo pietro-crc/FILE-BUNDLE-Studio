@@ -1,10 +1,11 @@
+import { useState } from 'react'
 import { zipSync, strToU8 } from 'fflate'
 import type { MarkdownArtifactSnapshot } from '../../core/markdown/types'
 import type { ManifestArtifact } from '../../core/manifest/types'
 import type { ProjectBundle } from '../../core/output/types'
 import { Button } from '../../ui/Button'
 import { ArchiveIcon, FilesIcon } from '../../ui/icons'
-import { ArtifactViewer } from './ArtifactViewer'
+import { ArtifactExplorerModal } from './ArtifactExplorerModal'
 import { ValidationSummary } from './ValidationSummary'
 import { AiGuidePanel } from './AiGuidePanel'
 
@@ -44,6 +45,7 @@ export function ResultsDashboard({
   projectBundle,
   onNewProject,
 }: ResultsDashboardProps) {
+  const [isExplorerOpen, setIsExplorerOpen] = useState(false)
   const projectName = manifestArtifact?.manifest.projectName || 'project'
   const includedCount = manifestArtifact?.manifest.summary.includedFileCount ?? 0
   const excludedCount = manifestArtifact?.manifest.summary.excludedFileCount ?? 0
@@ -90,7 +92,7 @@ export function ResultsDashboard({
   }
 
   return (
-    <div className="results-dashboard" data-screen-heading>
+    <div className="results-dashboard" data-screen-heading tabIndex={-1}>
       <header className="results-dashboard__glass-header">
         <div className="results-dashboard__top-row">
           <div className="results-dashboard__title-group">
@@ -152,17 +154,20 @@ export function ResultsDashboard({
       </header>
 
       <main className="results-dashboard__workspace">
-        <AiGuidePanel />
-
-        <ArtifactViewer
-          documentsArtifact={projectBundle?.documents ?? null}
-          manifestArtifact={manifestArtifact}
-          markdownSnapshot={markdownSnapshot}
-          onDownloadManifest={handleDownloadManifest}
-          onDownloadMarkdown={handleDownloadMarkdown}
-          onDownloadPdf={handleDownloadPdf}
-        />
+        <AiGuidePanel onOpenOutputs={() => setIsExplorerOpen(true)} />
       </main>
+
+      <ArtifactExplorerModal
+        documentsArtifact={projectBundle?.documents ?? null}
+        isOpen={isExplorerOpen}
+        manifestArtifact={manifestArtifact}
+        markdownSnapshot={markdownSnapshot}
+        onClose={() => setIsExplorerOpen(false)}
+        onDownloadManifest={handleDownloadManifest}
+        onDownloadMarkdown={handleDownloadMarkdown}
+        onDownloadPdf={handleDownloadPdf}
+        projectName={projectName}
+      />
     </div>
   )
 }

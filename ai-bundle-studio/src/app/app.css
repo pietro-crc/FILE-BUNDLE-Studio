@@ -29,6 +29,11 @@ body:has(.application-shell--landing) {
   justify-content: center;
 }
 
+.application-shell--results .app-main {
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
 .skip-link {
   position: fixed;
   z-index: 100;
@@ -2730,9 +2735,9 @@ body:has(.application-shell--landing) {
   width: 100%;
   max-width: 68rem;
   margin: 0 auto;
-  height: calc(100vh - 4.75rem);
-  max-height: calc(100vh - 4.75rem);
-  padding: 1.5rem 1rem;
+  height: 100%;
+  max-height: 100%;
+  padding: 1rem;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -2877,6 +2882,14 @@ body:has(.application-shell--landing) {
   margin: 0.2rem 0 0 0;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.guide-output-explorer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .ai-guide-card {
@@ -3053,174 +3066,360 @@ button.validation-pill:hover {
 }
 
 /* Artifact Viewer */
+.artifact-explorer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(4, 5, 8, 0.78);
+  backdrop-filter: blur(12px);
+  animation: artifactOverlayIn 180ms ease;
+}
+
+@keyframes artifactOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.artifact-explorer-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(96vw, 92rem);
+  height: min(92dvh, 62rem);
+  min-height: 38rem;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+  border-radius: 22px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.55);
+  animation: artifactModalIn 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes artifactModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.artifact-explorer-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(110deg, color-mix(in srgb, var(--color-accent) 10%, var(--color-surface)), var(--color-surface));
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.artifact-explorer-modal__header > div {
+  min-width: 0;
+}
+
+.artifact-explorer-modal__header span {
+  color: var(--color-accent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.artifact-explorer-modal__header h2 {
+  margin: 0.12rem 0 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 1.15rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artifact-explorer-modal__header p {
+  margin: 0.18rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+.artifact-explorer-modal__close {
+  flex-shrink: 0;
+}
+
+.artifact-explorer-modal__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  padding: 0.9rem;
+  background: color-mix(in srgb, var(--color-canvas) 72%, var(--color-surface));
+}
+
+.artifact-explorer-modal__body .artifact-viewer {
+  height: 100%;
+  border-radius: 15px;
+}
+
 .artifact-viewer {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
   background: var(--color-surface);
-  border-radius: 18px;
+  border-radius: 20px;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
-.artifact-viewer__header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--color-border);
-  background: linear-gradient(115deg, color-mix(in srgb, var(--color-surface-muted) 62%, transparent), transparent);
-}
-
-.artifact-viewer__heading {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  flex-shrink: 0;
-}
-
-.artifact-viewer__heading > span,
 .artifact-viewer__preview-header {
-  color: var(--color-text-muted);
+  color: var(--color-accent);
   font-size: 0.66rem;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.artifact-viewer__shell {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.artifact-viewer__sidebar {
+  padding: 1rem;
+  background: color-mix(in srgb, var(--color-canvas) 78%, var(--color-surface));
+  border-right: 1px solid var(--color-border);
+}
+
+.artifact-format-nav,
+.artifact-format-nav__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.artifact-format-nav {
+  gap: 0.85rem;
+}
+
+.artifact-format-nav__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.15rem;
+  color: var(--color-text-muted);
+  font-size: 0.66rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.artifact-viewer__heading h2 {
-  margin: 0;
+.artifact-format-nav__heading strong {
+  color: var(--color-text-subtle);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.artifact-format-nav__list {
+  gap: 0.55rem;
+}
+
+.artifact-format-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.8rem;
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.artifact-format-card:hover {
   color: var(--color-text);
-  font-size: 0.98rem;
+  background: color-mix(in srgb, var(--color-surface-elevated) 58%, transparent);
+  border-color: var(--color-border);
+  transform: translateX(2px);
+}
+
+.artifact-format-card--active {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent) 13%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  box-shadow: inset 3px 0 0 var(--color-accent), 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.artifact-format-card__icon,
+.artifact-viewer__identity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+  border-radius: 9px;
+}
+
+.artifact-format-card__icon svg,
+.artifact-viewer__identity-icon svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.artifact-format-card__copy,
+.artifact-format-card__meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.artifact-format-card__copy {
+  gap: 0.2rem;
+}
+
+.artifact-format-card__copy strong {
+  overflow: hidden;
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artifact-format-card__copy small {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.66rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artifact-format-card__meta {
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.artifact-format-card__meta code {
+  color: var(--color-text);
+  font-size: 0.67rem;
   font-weight: 700;
 }
 
-.artifact-viewer__tabs {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: color-mix(in srgb, var(--color-canvas) 72%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-  border-radius: 10px;
-}
-
-.tab-button {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-text-subtle);
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tab-button:hover {
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--color-surface-muted) 60%, transparent);
-}
-
-.tab-button small {
-  color: inherit;
-  font-size: 0.7rem;
-  opacity: 0.7;
-}
-
-.tab-button--active {
-  color: var(--color-canvas);
-  background: var(--color-accent);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-accent) 25%, transparent);
-}
-
-.artifact-viewer__content {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.artifact-viewer__pane {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.artifact-viewer__meta-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 1.25rem;
-  background: color-mix(in srgb, var(--color-canvas) 88%, var(--color-surface));
-  border-bottom: 1px solid var(--color-border);
-  flex-shrink: 0;
-}
-
-.artifact-meta-group {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.artifact-meta-item {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  padding: 0.35rem 0.55rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--color-surface-elevated) 48%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-border) 56%, transparent);
-  color: var(--color-text);
-  font-size: 0.8rem;
-}
-
-.artifact-meta-item__label {
-  color: var(--color-text-muted);
-  font-size: 0.68rem;
-  font-weight: 600;
-}
-
-.artifact-status {
+.artifact-format-card__meta small,
+.artifact-validation {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  font-size: 0.64rem;
+  font-weight: 700;
 }
 
-.artifact-status::before {
-  width: 0.42rem;
-  height: 0.42rem;
+.artifact-format-card__meta small::before,
+.artifact-validation::before {
+  width: 0.38rem;
+  height: 0.38rem;
   border-radius: 50%;
   background: currentColor;
   content: '';
 }
 
-.artifact-status--valid {
+.is-valid,
+.artifact-validation--valid {
   color: var(--color-success, #52b788);
 }
 
-.artifact-status--warning {
+.has-warning,
+.artifact-validation--warning {
   color: var(--color-warning, #e6a700);
+}
+
+.artifact-viewer__workspace {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--color-surface);
+  animation: artifactWorkspaceIn 180ms ease;
+}
+
+@keyframes artifactWorkspaceIn {
+  from {
+    opacity: 0.75;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.artifact-viewer__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0.9rem;
+}
+
+.artifact-viewer__identity,
+.artifact-viewer__toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.artifact-viewer__identity {
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.artifact-viewer__identity > div {
+  min-width: 0;
+}
+
+.artifact-viewer__identity > div > span {
+  color: var(--color-text-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.artifact-viewer__identity h3 {
+  margin: 0.12rem 0 0;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.artifact-viewer__identity p {
+  margin: 0.18rem 0 0;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artifact-viewer__toolbar-actions {
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .artifact-download-btn {
@@ -3230,6 +3429,31 @@ button.validation-pill:hover {
   flex-shrink: 0;
 }
 
+.artifact-viewer__details {
+  display: flex;
+  gap: 1.5rem;
+  margin: 0 1.25rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+}
+
+.artifact-viewer__details > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.artifact-viewer__details span {
+  color: var(--color-text-muted);
+  font-size: 0.66rem;
+}
+
+.artifact-viewer__details strong {
+  color: var(--color-text);
+  font-size: 0.75rem;
+}
+
 .artifact-viewer__preview {
   flex: 1;
   min-height: 0;
@@ -3237,8 +3461,8 @@ button.validation-pill:hover {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding: 1rem 1.25rem 1.25rem;
-  background: color-mix(in srgb, var(--color-surface-muted) 30%, var(--color-surface));
+  padding: 0.9rem 1.25rem 1.25rem;
+  background: var(--color-surface);
 }
 
 .artifact-viewer__preview-header {
@@ -3250,10 +3474,10 @@ button.validation-pill:hover {
 .preview-code-block {
   margin: 0;
   padding: 1rem 1.1rem;
-  min-height: 12rem;
-  background: color-mix(in srgb, var(--color-canvas) 90%, black);
+  min-height: 14rem;
+  background: color-mix(in srgb, var(--color-canvas) 94%, black);
   border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 0.82rem;
   line-height: 1.5;
   font-family: var(--font-mono, monospace);
@@ -3262,32 +3486,173 @@ button.validation-pill:hover {
   word-break: break-word;
 }
 
+.artifact-preview-empty {
+  display: grid;
+  min-height: 20rem;
+  place-items: center;
+  color: var(--color-text-muted);
+  background: var(--color-canvas);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: 12px;
+  font-size: 0.82rem;
+}
+
+.pdf-preview {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.pdf-preview__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.55rem 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-muted);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+
+.pdf-preview__toolbar button {
+  padding: 0.3rem 0.65rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.pdf-preview__toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.pdf-preview__viewport {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  padding: 1.25rem;
+  overflow: auto;
+  background: color-mix(in srgb, var(--color-surface-muted) 72%, var(--color-canvas));
+}
+
+.pdf-preview__viewport .artifact-preview-empty {
+  width: 100%;
+}
+
+.pdf-preview__canvas {
+  display: none;
+  max-width: 100%;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.pdf-preview__canvas.is-visible {
+  display: block;
+}
+
+@media (max-height: 700px) {
+  .processing-card {
+    gap: 0.85rem;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .processing-linear-visual {
+    padding: 0.75rem;
+  }
+}
+
 .pdf-page-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
 }
 
-@media (max-width: 760px) {
-  .artifact-viewer__header,
-  .artifact-viewer__meta-bar {
+@media (max-width: 900px) {
+  .artifact-viewer__shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .artifact-viewer__sidebar {
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .artifact-format-nav__list {
+    flex-direction: row;
+  }
+
+  .artifact-format-card {
+    flex: 0 0 15rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .artifact-explorer-overlay {
+    padding: 0;
+  }
+
+  .artifact-explorer-modal {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .artifact-explorer-modal__header {
+    align-items: flex-start;
+    padding: 0.85rem 1rem;
+  }
+
+  .artifact-explorer-modal__header p {
+    display: none;
+  }
+
+  .artifact-explorer-modal__body {
+    padding: 0;
+  }
+
+  .artifact-explorer-modal__body .artifact-viewer {
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .artifact-viewer__toolbar,
+  .artifact-viewer__toolbar-actions {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .artifact-viewer__tabs {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .tab-button {
-    flex: 1 0 auto;
-    justify-content: center;
+  .artifact-viewer__toolbar-actions {
+    gap: 0.6rem;
   }
 
   .artifact-download-btn {
     justify-content: center;
     width: 100%;
+  }
+
+  .artifact-viewer__details {
+    gap: 0.75rem 1rem;
+    flex-wrap: wrap;
   }
 }
 

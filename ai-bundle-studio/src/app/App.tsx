@@ -36,6 +36,7 @@ export function App() {
     }`
 
     if (previousState.current !== workflow.state) {
+      window.scrollTo({ left: 0, top: 0, behavior: 'auto' })
       document.querySelector<HTMLElement>('[data-screen-heading]')?.focus()
       previousState.current = workflow.state
     }
@@ -100,10 +101,15 @@ export function App() {
     workflow.state === 'idle' ||
     workflow.state === 'file-selected' ||
     workflow.state === 'ready-to-process' ||
-    workflow.state === 'processing'
+    workflow.state === 'processing' ||
+    workflow.state === 'completed'
 
   return (
-    <div className={`application-shell ${isViewportLocked ? 'application-shell--landing' : ''}`}>
+    <div
+      className={`application-shell ${isViewportLocked ? 'application-shell--landing' : ''} ${
+        workflow.state === 'completed' ? 'application-shell--results' : ''
+      }`}
+    >
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
@@ -134,4 +140,3 @@ export function App() {
     </div>
   )
 }
-

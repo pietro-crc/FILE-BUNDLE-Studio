@@ -77,17 +77,17 @@ function extractPageText(items: readonly unknown[], limit: number): { text: stri
 
 function renderPdfMarkdown(asset: PdfDocumentAsset): string {
   const lines = [
-    '### Documento PDF',
+    '### PDF document',
     '',
-    `- Pagine originali: ${asset.pageCount}`,
-    `- Pagine elaborate: ${asset.importedPageCount}`,
-    `- JavaScript incorporato rilevato: ${asset.hasJavaScript ? 'sì — non eseguito' : 'no'}`,
-    `- Importazione visuale: pagine originali copiate senza rasterizzazione quando possibile`,
+    `- Original pages: ${asset.pageCount}`,
+    `- Processed pages: ${asset.importedPageCount}`,
+    `- Embedded JavaScript detected: ${asset.hasJavaScript ? 'yes - not executed' : 'no'}`,
+    `- Visual import: original pages copied without rasterization where possible`,
   ]
   asset.pages.forEach((page) => {
-    lines.push('', `### Pagina ${page.pageNumber}`, '', `Dimensioni: ${page.width.toFixed(2)} × ${page.height.toFixed(2)} pt · rotazione ${page.rotation}°`, '')
-    lines.push(page.text.length > 0 ? page.text : '_Nessun testo estraibile rilevato in questa pagina._')
-    if (page.truncated) lines.push('', '> Testo della pagina troncato secondo il limite configurato.')
+    lines.push('', `### Page ${page.pageNumber}`, '', `Dimensions: ${page.width.toFixed(2)} × ${page.height.toFixed(2)} pt · rotation ${page.rotation}°`, '')
+    lines.push(page.text.length > 0 ? page.text : '_No extractable text detected on this page._')
+    if (page.truncated) lines.push('', '> Page text truncated according to the configured limit.')
   })
   return lines.join('\n')
 }
@@ -167,15 +167,15 @@ export async function extractPdfFile(
       }
     }
 
-    if (document.numPages > policy.maxPages) warnings.push(`PDF limitato alle prime ${policy.maxPages} pagine su ${document.numPages}.`)
-    if (anyTextTruncated || remainingTextCharacters === 0) warnings.push('Testo PDF troncato secondo i limiti configurati.')
+    if (document.numPages > policy.maxPages) warnings.push(`PDF limited to the first ${policy.maxPages} pages out of ${document.numPages}.`)
+    if (anyTextTruncated || remainingTextCharacters === 0) warnings.push('PDF text truncated according to the configured limits.')
     let hasJavaScript = false
     try {
       const actions = await document.getJSActions()
       hasJavaScript = Boolean(actions && Object.keys(actions).length > 0)
-      if (hasJavaScript) warnings.push('JavaScript incorporato rilevato e non eseguito.')
+      if (hasJavaScript) warnings.push('Embedded JavaScript detected and not executed.')
     } catch {
-      warnings.push('Impossibile verificare le azioni JavaScript incorporate.')
+      warnings.push('Unable to verify embedded JavaScript actions.')
     }
 
     const partial = document.numPages > importedPageCount || anyTextTruncated || remainingTextCharacters === 0
@@ -225,7 +225,7 @@ export async function extractPdfFile(
       asset,
     }
   } catch (error) {
-    if (encrypted) throw new Error('PDF cifrato o protetto da password: nessun tentativo di bypass eseguito.', { cause: error })
+    if (encrypted) throw new Error('PDF is encrypted or password-protected; no bypass was attempted.', { cause: error })
     throw error
   } finally {
     await loadingTask.destroy().catch(() => undefined)
