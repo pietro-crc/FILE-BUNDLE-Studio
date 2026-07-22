@@ -1,0 +1,22 @@
+{
+  "step": "STEP-005",
+  "recordedAt": "2026-07-21",
+  "environment": {
+    "runtime": "Node.js 22.16.0",
+    "testEnvironment": "Vitest 4.1.10 with JSDOM",
+    "host": "single local container"
+  },
+  "fixture": "500-small-typescript-files",
+  "files": 500,
+  "parts": 2,
+  "markdownBytes": 465944,
+  "manifestBytes": 1322047,
+  "elapsedMs": 113.58,
+  "policy": {
+    "maxBytesPerFile": 65536,
+    "maxCharactersPerFile": 65536,
+    "maxPartBytes": 262144,
+    "includeLineNumbers": false
+  },
+  "note": "Diagnostic single-run baseline; excludes acquisition, preflight, manifest construction, browser storage latency, workers, downloads, and other format adapters."
+}

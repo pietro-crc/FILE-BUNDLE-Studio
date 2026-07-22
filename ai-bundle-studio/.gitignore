@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-spikes/
+dist-e2e/
+coverage/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+dist-pages/

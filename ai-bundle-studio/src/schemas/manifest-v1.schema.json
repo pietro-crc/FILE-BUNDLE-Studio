@@ -1,0 +1,993 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-bundle-studio.local/schemas/manifest-v1.schema.json",
+  "title": "AI Bundle Studio Manifest v1",
+  "description": "Schema autorevole del manifest metadata-only prima della generazione degli output finali.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mediaType",
+    "application",
+    "generatedAt",
+    "projectName",
+    "instructions",
+    "input",
+    "settings",
+    "preflight",
+    "summary",
+    "security",
+    "tree",
+    "directories",
+    "files",
+    "outputs",
+    "sharding"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "mediaType": {
+      "const": "application/vnd.ai-bundle-studio.manifest+json"
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "const": "AI Bundle Studio"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "projectName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entryPoint",
+        "steps"
+      ],
+      "properties": {
+        "entryPoint": {
+          "const": "manifest"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "input": {
+      "$ref": "#/$defs/input"
+    },
+    "settings": {
+      "$ref": "#/$defs/settings"
+    },
+    "preflight": {
+      "$ref": "#/$defs/preflight"
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    },
+    "tree": {
+      "$ref": "#/$defs/treeNode"
+    },
+    "directories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/directory"
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/output"
+      }
+    },
+    "sharding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "applied",
+        "parts"
+      ],
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/outputMode"
+        },
+        "applied": {
+          "type": "boolean"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "security": {
+      "$ref": "#/$defs/securitySummary"
+    }
+  },
+  "$defs": {
+    "nonnegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nodeId": {
+      "type": "string",
+      "pattern": "^(dir|file)_[a-f0-9]{64}$"
+    },
+    "outputMode": {
+      "enum": [
+        "three-files",
+        "multipart",
+        "quick-preview"
+      ]
+    },
+    "capability": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    "riskLevel": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minBytes",
+        "maxBytes"
+      ],
+      "properties": {
+        "minBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "maxBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "sourceBytes",
+        "logicalBytes",
+        "importIssues"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "file-picker",
+            "directory-picker",
+            "drag-drop",
+            "zip"
+          ]
+        },
+        "sourceBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "logicalBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "importIssues": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outputMode",
+        "exclusionGlobs",
+        "language",
+        "includeExtractedText",
+        "nestedArchiveDepth",
+        "secretHandling"
+      ],
+      "properties": {
+        "outputMode": {
+          "$ref": "#/$defs/outputMode"
+        },
+        "exclusionGlobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "includeExtractedText": {
+          "type": "boolean"
+        },
+        "nestedArchiveDepth": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "secretHandling": {
+          "$ref": "#/$defs/secretHandling"
+        }
+      }
+    },
+    "preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "policy",
+        "recommendation",
+        "estimates"
+      ],
+      "properties": {
+        "status": {
+          "const": "complete"
+        },
+        "policy": {
+          "type": "object"
+        },
+        "recommendation": {
+          "type": "object"
+        },
+        "estimates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "markdown",
+            "pdf",
+            "manifest",
+            "estimatedPeakMemory"
+          ],
+          "properties": {
+            "markdown": {
+              "$ref": "#/$defs/range"
+            },
+            "pdf": {
+              "$ref": "#/$defs/range"
+            },
+            "manifest": {
+              "$ref": "#/$defs/range"
+            },
+            "estimatedPeakMemory": {
+              "$ref": "#/$defs/range"
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileCount",
+        "directoryCount",
+        "includedFileCount",
+        "excludedFileCount",
+        "blockedFileCount",
+        "sourceBytes",
+        "logicalBytes",
+        "includedLogicalBytes",
+        "capabilityCounts",
+        "riskCounts"
+      ],
+      "properties": {
+        "fileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "directoryCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "includedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "excludedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "blockedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "sourceBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "logicalBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "includedLogicalBytes": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "capabilityCounts": {
+          "type": "object"
+        },
+        "riskCounts": {
+          "type": "object"
+        }
+      }
+    },
+    "treeNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodeId",
+        "kind",
+        "name",
+        "normalizedPath",
+        "children"
+      ],
+      "properties": {
+        "nodeId": {
+          "$ref": "#/$defs/nodeId"
+        },
+        "kind": {
+          "enum": [
+            "directory",
+            "file"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "normalizedPath": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/treeNode"
+          }
+        }
+      }
+    },
+    "directory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "directoryId",
+        "originalPath",
+        "normalizedPath",
+        "name",
+        "source",
+        "parentDirectoryId",
+        "childDirectoryIds",
+        "childFileIds"
+      ],
+      "properties": {
+        "directoryId": {
+          "$ref": "#/$defs/nodeId"
+        },
+        "originalPath": {
+          "type": "string"
+        },
+        "normalizedPath": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "file-picker",
+            "directory-picker",
+            "drag-drop",
+            "zip",
+            "virtual"
+          ]
+        },
+        "parentDirectoryId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "childDirectoryIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nodeId"
+          }
+        },
+        "childFileIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nodeId"
+          }
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fileId",
+        "originalPath",
+        "normalizedPath",
+        "parentDirectoryId",
+        "name",
+        "extension",
+        "source",
+        "size",
+        "compressedSize",
+        "lastModified",
+        "mimeDeclared",
+        "mimeDetected",
+        "detectionMethod",
+        "category",
+        "capabilityLevel",
+        "supportReason",
+        "isText",
+        "encoding",
+        "risks",
+        "riskLevel",
+        "warnings",
+        "errors",
+        "inclusion",
+        "security",
+        "integrity",
+        "adapter",
+        "representations"
+      ],
+      "properties": {
+        "fileId": {
+          "$ref": "#/$defs/nodeId"
+        },
+        "originalPath": {
+          "type": "string"
+        },
+        "normalizedPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parentDirectoryId": {
+          "$ref": "#/$defs/nodeId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "extension": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "file-picker",
+            "directory-picker",
+            "drag-drop",
+            "zip"
+          ]
+        },
+        "size": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "compressedSize": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "lastModified": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "mimeDeclared": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "mimeDetected": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detectionMethod": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "capabilityLevel": {
+          "$ref": "#/$defs/capability"
+        },
+        "supportReason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isText": {
+          "type": "boolean"
+        },
+        "encoding": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "riskLevel": {
+          "$ref": "#/$defs/riskLevel"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inclusion": {
+          "type": "object"
+        },
+        "integrity": {
+          "type": "object"
+        },
+        "adapter": {
+          "type": "object"
+        },
+        "representations": {
+          "$ref": "#/$defs/representations"
+        },
+        "security": {
+          "$ref": "#/$defs/fileSecurity"
+        }
+      }
+    },
+    "representations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest",
+        "markdown",
+        "pdf"
+      ],
+      "properties": {
+        "manifest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recorded",
+            "pointer"
+          ],
+          "properties": {
+            "recorded": {
+              "const": true
+            },
+            "pointer": {
+              "type": "string",
+              "pattern": "^/files/[0-9]+$"
+            }
+          }
+        },
+        "markdown": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "anchors",
+            "parts",
+            "truncated",
+            "originalBytes",
+            "extractedBytes",
+            "extractedCharacters",
+            "lineCount",
+            "encoding",
+            "usedFallback",
+            "replacementCharacters",
+            "newlineNormalization",
+            "error"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "not-started",
+                "completed",
+                "partial",
+                "failed",
+                "not-applicable"
+              ]
+            },
+            "anchors": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^ai-bundle-file_[a-f0-9]{64}(-segment-[0-9]{3})?$"
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "truncated": {
+              "type": "boolean"
+            },
+            "originalBytes": {
+              "$ref": "#/$defs/nonnegativeInteger"
+            },
+            "extractedBytes": {
+              "$ref": "#/$defs/nonnegativeInteger"
+            },
+            "extractedCharacters": {
+              "$ref": "#/$defs/nonnegativeInteger"
+            },
+            "lineCount": {
+              "$ref": "#/$defs/nonnegativeInteger"
+            },
+            "encoding": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "usedFallback": {
+              "type": "boolean"
+            },
+            "replacementCharacters": {
+              "$ref": "#/$defs/nonnegativeInteger"
+            },
+            "newlineNormalization": {
+              "enum": [
+                "lf",
+                null
+              ]
+            },
+            "error": {
+              "$ref": "#/$defs/nullableString"
+            }
+          }
+        },
+        "pdf": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "pages",
+            "parts"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "not-started",
+                "completed",
+                "partial",
+                "failed",
+                "not-applicable"
+              ]
+            },
+            "pages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonnegativeInteger"
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "kind",
+        "status",
+        "parts",
+        "sha256"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "documents",
+            "content",
+            "manifest"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "pdf",
+            "markdown",
+            "json"
+          ]
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "generated",
+            "failed"
+          ]
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "secretHandling": {
+      "enum": [
+        "report-only",
+        "redact",
+        "exclude"
+      ]
+    },
+    "secretCategory": {
+      "enum": [
+        "sensitive-filename",
+        "private-key",
+        "cloud-credential",
+        "access-token",
+        "jwt",
+        "connection-string",
+        "password-assignment",
+        "high-entropy"
+      ]
+    },
+    "secretPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxCharactersPerFile",
+        "maxFindingsPerFile",
+        "maxCandidateLength",
+        "minHighEntropyLength",
+        "highEntropyThreshold",
+        "scanHighEntropy"
+      ],
+      "properties": {
+        "maxCharactersPerFile": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000000
+        },
+        "maxFindingsPerFile": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "maxCandidateLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "minHighEntropyLength": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "highEntropyThreshold": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "scanHighEntropy": {
+          "type": "boolean"
+        }
+      }
+    },
+    "secretCategoryCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sensitive-filename",
+        "private-key",
+        "cloud-credential",
+        "access-token",
+        "jwt",
+        "connection-string",
+        "password-assignment",
+        "high-entropy"
+      ],
+      "properties": {
+        "sensitive-filename": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "private-key": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "cloud-credential": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "access-token": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "jwt": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "connection-string": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "password-assignment": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "high-entropy": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        }
+      }
+    },
+    "fileSecurity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "findingCount",
+        "highSeverityCount",
+        "mediumSeverityCount",
+        "categories",
+        "redactionCount",
+        "excluded",
+        "visualOmitted",
+        "scanTruncated",
+        "warnings",
+        "error"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not-scanned",
+            "clean",
+            "flagged",
+            "redacted",
+            "excluded",
+            "failed"
+          ]
+        },
+        "findingCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "highSeverityCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "mediumSeverityCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "categories": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/secretCategory"
+          }
+        },
+        "redactionCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "excluded": {
+          "type": "boolean"
+        },
+        "visualOmitted": {
+          "type": "boolean"
+        },
+        "scanTruncated": {
+          "type": "boolean"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "securitySummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "policy",
+        "scannedFileCount",
+        "flaggedFileCount",
+        "findingCount",
+        "redactionCount",
+        "excludedFileCount",
+        "visualOmittedFileCount",
+        "truncatedScanCount",
+        "failedScanCount",
+        "categoryCounts"
+      ],
+      "properties": {
+        "mode": {
+          "$ref": "#/$defs/secretHandling"
+        },
+        "policy": {
+          "$ref": "#/$defs/secretPolicy"
+        },
+        "scannedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "flaggedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "findingCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "redactionCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "excludedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "visualOmittedFileCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "truncatedScanCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "failedScanCount": {
+          "$ref": "#/$defs/nonnegativeInteger"
+        },
+        "categoryCounts": {
+          "$ref": "#/$defs/secretCategoryCounts"
+        }
+      }
+    }
+  }
+}

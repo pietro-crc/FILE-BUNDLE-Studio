@@ -1,0 +1,20 @@
+{
+  "step": "STEP-008",
+  "recordedAt": "2026-07-21T21:30:07+02:00",
+  "environment": {
+    "node": "22.16.0",
+    "platform": "linux-x64",
+    "runner": "Vitest/JSDOM single host"
+  },
+  "fixture": "one-macro-docm-one-feature-rich-pptm",
+  "docxBytes": 2423,
+  "pptxBytes": 3746,
+  "documents": 2,
+  "slides": 2,
+  "markdownBytes": 4850,
+  "officePreviewPages": 4,
+  "documentsPages": 10,
+  "documentsBytes": 9524,
+  "elapsedMs": 338.41,
+  "note": "Diagnostic single-run baseline; not a product performance promise."
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T21:33:40.916Z",
+  "environment": {
+    "node": "v22.16.0",
+    "platform": "linux",
+    "architecture": "x64"
+  },
+  "policy": {
+    "signatureBytesPerFile": 16384,
+    "concurrency": 4
+  },
+  "workload": {
+    "fixture": "1000-small-typescript-files",
+    "files": 1000,
+    "logicalBytes": 28780,
+    "elapsedMs": 23.8
+  },
+  "caveats": [
+    "Single synthetic run on the development container; this is a diagnostic baseline, not a product promise.",
+    "The fixture uses in-memory lazy sources and does not model slow removable storage, large ZIP inflation, or real Office parsers.",
+    "The regression test uses a deliberately broad ceiling to detect catastrophic slowdowns without making host-specific timing brittle."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "step": "STEP-009",
+  "generatedAt": "2026-07-22T10:30:00.000Z",
+  "officialGate": {
+    "status": "blocked",
+    "reason": "Internal npm registry returned HTTP 503 during exact npm ci dependency restore",
+    "commandsNotClaimedPassed": [
+      "npm run quality",
+      "npm test",
+      "npm run benchmark:all",
+      "npm run test:e2e",
+      "npm audit"
+    ]
+  },
+  "independentChecks": {
+    "strictCoreTypeScript": "passed",
+    "substituteFullSourceTypeScript": "passed",
+    "shellAndNodeScriptSyntax": "passed",
+    "jsonDocumentsValidated": 4,
+    "staticForbiddenRuntimeApis": "none found",
+    "gitDiffCheck": "passed",
+    "modes": [
+      {
+        "mode": "report-only",
+        "findings": 3,
+        "redactions": 0,
+        "excluded": 0
+      },
+      {
+        "mode": "redact",
+        "findings": 3,
+        "redactions": 2,
+        "excluded": 0
+      },
+      {
+        "mode": "exclude",
+        "findings": 3,
+        "redactions": 0,
+        "excluded": 1
+      }
+    ],
+    "manifestLeakFree": true,
+    "crossReferenceMutationRejected": true,
+    "benchmark": {
+      "step": "STEP-009",
+      "environment": {
+        "node": "22.16.0",
+        "platform": "linux-x64"
+      },
+      "fixture": "300-text-files-60-flagged",
+      "files": 300,
+      "flaggedFiles": 60,
+      "findings": 120,
+      "redactions": 60,
+      "markdownBytes": 295519,
+      "elapsedMs": 59.76,
+      "method": "isolated deterministic core benchmark",
+      "disclaimer": "Diagnostic baseline; not a product performance promise."
+    }
+  }
+}

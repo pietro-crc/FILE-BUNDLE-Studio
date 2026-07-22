@@ -1,0 +1,17 @@
+{
+  "step": "STEP-006",
+  "environment": {
+    "runtime": "Node.js 22 / Vitest JSDOM",
+    "note": "Single-host diagnostic; not a product performance promise."
+  },
+  "spreadsheet": {
+    "fixture": "one-xlsx-100x20",
+    "workbookBytes": 11408,
+    "cells": 2000,
+    "formulas": 100,
+    "markdownBytes": 19502,
+    "previewPages": 10,
+    "previewBytes": 117483,
+    "elapsedMs": 3961.61
+  }
+}

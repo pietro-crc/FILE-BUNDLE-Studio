@@ -1,0 +1,25 @@
+{
+  "step": "STEP-004",
+  "recordedAt": "2026-07-20",
+  "environment": {
+    "runtime": "Node.js 22.16.0",
+    "platform": "Linux x64",
+    "testHost": "Vitest with JSDOM"
+  },
+  "fixture": {
+    "name": "1000-small-typescript-files",
+    "files": 1000,
+    "directories": 21,
+    "selection": "all included",
+    "generatedAt": "2026-07-20T12:00:00.000Z"
+  },
+  "result": {
+    "canonicalManifestBytes": 1983086,
+    "generationAndValidationMs": 92.78
+  },
+  "notes": [
+    "The measurement covers deterministic node IDs, manifest construction, cross-consistency validation, and canonical JSON serialization.",
+    "It does not include original-file hashing, parser execution, worker transfer, output generation, browser storage, or download.",
+    "This is a single-host diagnostic baseline, not a product performance promise."
+  ]
+}

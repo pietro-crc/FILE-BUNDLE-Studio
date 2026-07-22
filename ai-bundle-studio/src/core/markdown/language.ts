@@ -1,0 +1,50 @@
+const LANGUAGE_BY_EXTENSION: Readonly<Record<string, string>> = {
+  bat: 'bat',
+  c: 'c',
+  cc: 'cpp',
+  cpp: 'cpp',
+  cs: 'csharp',
+  css: 'css',
+  csv: 'csv',
+  dockerfile: 'dockerfile',
+  go: 'go',
+  h: 'c',
+  hpp: 'cpp',
+  htm: 'html',
+  html: 'html',
+  ini: 'ini',
+  java: 'java',
+  js: 'javascript',
+  json: 'json',
+  jsonc: 'jsonc',
+  jsonl: 'jsonl',
+  jsx: 'jsx',
+  kt: 'kotlin',
+  kts: 'kotlin',
+  md: 'markdown',
+  php: 'php',
+  properties: 'properties',
+  ps1: 'powershell',
+  py: 'python',
+  rb: 'ruby',
+  rs: 'rust',
+  rst: 'rst',
+  sh: 'shell',
+  sql: 'sql',
+  swift: 'swift',
+  toml: 'toml',
+  ts: 'typescript',
+  tsv: 'tsv',
+  tsx: 'tsx',
+  txt: 'text',
+  xml: 'xml',
+  yaml: 'yaml',
+  yml: 'yaml',
+}
+
+export function markdownLanguageFor(name: string, extension: string): string {
+  const normalizedName = name.toLowerCase()
+  if (normalizedName === 'dockerfile') return 'dockerfile'
+  if (normalizedName === 'makefile') return 'makefile'
+  return LANGUAGE_BY_EXTENSION[extension.toLowerCase()] ?? 'text'
+}

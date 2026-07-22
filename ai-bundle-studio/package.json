@@ -1,0 +1,60 @@
+{
+  "name": "ai-bundle-studio",
+  "private": true,
+  "version": "0.0.0-step-009",
+  "description": "Privacy-first browser studio for turning file bundles into AI-readable PDF, Markdown, and manifest outputs.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0 <23",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint .",
+    "typecheck": "tsc -b --pretty false",
+    "test": "bash scripts/run-vitest-suite.sh regression",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "bash scripts/run-e2e.sh",
+    "spike:build": "vite build --config vite.spikes.config.ts",
+    "benchmark": "node scripts/benchmark-baseline.mjs",
+    "audit:runtime": "npm audit --omit=dev --audit-level=low --fetch-timeout=30000 --fetch-retries=1",
+    "quality": "bash scripts/run-quality.sh",
+    "build:e2e": "VITE_BASE_PATH=./ VITE_INLINE_DYNAMIC_IMPORTS=true vite build --outDir dist-e2e",
+    "benchmark:preflight": "vitest run tests/benchmarks/preflight.benchmark.test.ts --reporter=verbose",
+    "benchmark:manifest": "vitest run tests/benchmarks/manifest.benchmark.test.ts --reporter=verbose",
+    "benchmark:markdown": "vitest run tests/benchmarks/markdown.benchmark.test.ts --reporter=verbose",
+    "benchmark:all": "bash scripts/run-vitest-suite.sh benchmarks",
+    "test:pdf": "node scripts/check-pdf-probe.mjs",
+    "benchmark:spreadsheet": "vitest run tests/benchmarks/spreadsheet.benchmark.test.ts --reporter=verbose",
+    "benchmark:pdf-images": "vitest run tests/benchmarks/pdf-image.benchmark.test.ts --reporter=verbose",
+    "benchmark:office": "vitest run tests/benchmarks/office.benchmark.test.ts --reporter=verbose",
+    "benchmark:security": "vitest run tests/benchmarks/security.benchmark.test.ts --reporter=verbose"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "mammoth": "1.12.0",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.1.200",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "22.18.0",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.3",
+    "@vitest/coverage-v8": "4.1.10",
+    "jsdom": "29.1.1",
+    "oxlint": "1.71.0",
+    "typescript": "6.0.3",
+    "vite": "8.1.5",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T20:09:59.238Z",
+  "environment": {
+    "node": "v22.16.0",
+    "platform": "linux",
+    "architecture": "x64"
+  },
+  "workloads": {
+    "sha256_25MiB": {
+      "elapsedMs": 36.61,
+      "digest": "c6b024637f8bc5b9d4e2fd9291fe0fa4874b582a7c091fcff9ce19e687b914c5"
+    },
+    "zip_1000_small_files": {
+      "creationMs": 116.49,
+      "extractionMs": 4.5,
+      "compressedBytes": 131912,
+      "extractedEntries": 1000
+    },
+    "pdf_25_pages": {
+      "generationMs": 45.76,
+      "bytes": 12131
+    },
+    "markdown_500_sections": {
+      "generationMs": 0.17,
+      "bytes": 37663
+    }
+  },
+  "buildArtifacts": {
+    "productionBytes": 1042793,
+    "spikeBytes": 7043759
+  },
+  "integrity": "7cbf1f7ecf38bbbdf5505be46dbfed3c767b0a4c8bfa1785e3b8f046cd7b4982",
+  "caveats": [
+    "Single run on the CI/container host; values are a baseline, not a product promise.",
+    "No large real-world Office corpus was used in STEP-000.",
+    "Browser memory and rendering benchmarks remain scheduled for later steps."
+  ]
+}

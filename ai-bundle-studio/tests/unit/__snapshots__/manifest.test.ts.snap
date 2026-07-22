@@ -1,0 +1,612 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`manifest v1 > keeps the JSON schema and the generated golden artifact version-aligned 1`] = `
+"{
+  "application": {
+    "name": "AI Bundle Studio",
+    "version": "0.0.0-step-009"
+  },
+  "directories": [
+    {
+      "childDirectoryIds": [
+        "dir_7f04248534a1faa2e4eb84ba451309c6b9595a3cc6ce6b23c3d2e6fe5ffb763e",
+        "dir_dd6eb18f463f8111b3e50b87b775a6c2c544bc61a0f6eba069c57d0f0a94c4ba",
+        "dir_9740a22055133614156f91d2d7d3f864e3ad65c35498ae1bc0f883fa358626da",
+        "dir_954f03a168493daf5680bc2c270d7100f23e8b732a9c894bbec944d9115162f2"
+      ],
+      "childFileIds": [
+        "file_2cd3579d8f25bc628a3a14d82763a010ba32b03f9cb8d83739744ba497aa446e"
+      ],
+      "directoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "name": "Progetto",
+      "normalizedPath": "",
+      "originalPath": "",
+      "parentDirectoryId": null,
+      "source": "virtual"
+    },
+    {
+      "childDirectoryIds": [],
+      "childFileIds": [
+        "file_6ec177608031d56cc34d113266c7e4cc96837f2d63a3f5b7b5bcbc9ffe3f90dd"
+      ],
+      "directoryId": "dir_7f04248534a1faa2e4eb84ba451309c6b9595a3cc6ce6b23c3d2e6fe5ffb763e",
+      "name": "bin",
+      "normalizedPath": "bin",
+      "originalPath": "bin",
+      "parentDirectoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "source": "directory-picker"
+    },
+    {
+      "childDirectoryIds": [],
+      "childFileIds": [
+        "file_a8b0aca9e56bc89e97cb915d586b5b4d9afea7eaf24a412ca1da743663a921aa"
+      ],
+      "directoryId": "dir_dd6eb18f463f8111b3e50b87b775a6c2c544bc61a0f6eba069c57d0f0a94c4ba",
+      "name": "dist",
+      "normalizedPath": "dist",
+      "originalPath": "dist",
+      "parentDirectoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "source": "directory-picker"
+    },
+    {
+      "childDirectoryIds": [],
+      "childFileIds": [
+        "file_aaf83f8e921bc9f6c7d2dcc58e2a084f621a2386b43bacd99d5d57fad8007947"
+      ],
+      "directoryId": "dir_9740a22055133614156f91d2d7d3f864e3ad65c35498ae1bc0f883fa358626da",
+      "name": "docs",
+      "normalizedPath": "docs",
+      "originalPath": "docs",
+      "parentDirectoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "source": "directory-picker"
+    },
+    {
+      "childDirectoryIds": [],
+      "childFileIds": [],
+      "directoryId": "dir_954f03a168493daf5680bc2c270d7100f23e8b732a9c894bbec944d9115162f2",
+      "name": "empty",
+      "normalizedPath": "empty",
+      "originalPath": "empty",
+      "parentDirectoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "source": "directory-picker"
+    }
+  ],
+  "files": [
+    {
+      "adapter": {
+        "conversionStatus": "not-applicable",
+        "id": "blocked",
+        "version": null
+      },
+      "capabilityLevel": "E",
+      "category": "binary",
+      "compressedSize": 4,
+      "detectionMethod": "signature",
+      "encoding": null,
+      "errors": [],
+      "extension": "bin",
+      "fileId": "file_6ec177608031d56cc34d113266c7e4cc96837f2d63a3f5b7b5bcbc9ffe3f90dd",
+      "inclusion": {
+        "included": false,
+        "matchedGlob": null,
+        "reason": "blocked-capability"
+      },
+      "integrity": {
+        "algorithm": "SHA-256",
+        "error": null,
+        "status": "pending",
+        "value": null
+      },
+      "isText": false,
+      "lastModified": 4000,
+      "mimeDeclared": null,
+      "mimeDetected": "application/vnd.microsoft.portable-executable",
+      "name": "program.bin",
+      "normalizedPath": "bin/program.bin",
+      "originalPath": "bin/program.bin",
+      "parentDirectoryId": "dir_7f04248534a1faa2e4eb84ba451309c6b9595a3cc6ce6b23c3d2e6fe5ffb763e",
+      "representations": {
+        "manifest": {
+          "pointer": "/files/0",
+          "recorded": true
+        },
+        "markdown": {
+          "anchors": [],
+          "encoding": null,
+          "error": null,
+          "extractedBytes": 0,
+          "extractedCharacters": 0,
+          "lineCount": 0,
+          "newlineNormalization": null,
+          "originalBytes": 4,
+          "parts": [],
+          "replacementCharacters": 0,
+          "status": "not-applicable",
+          "truncated": false,
+          "usedFallback": false
+        },
+        "pdf": {
+          "pages": [],
+          "parts": [],
+          "status": "not-applicable"
+        }
+      },
+      "riskLevel": "high",
+      "risks": [
+        {
+          "code": "executable-content",
+          "level": "high",
+          "message": "Contenuto eseguibile: conversione bloccata."
+        }
+      ],
+      "security": {
+        "categories": [],
+        "error": null,
+        "excluded": false,
+        "findingCount": 0,
+        "highSeverityCount": 0,
+        "mediumSeverityCount": 0,
+        "redactionCount": 0,
+        "scanTruncated": false,
+        "status": "not-scanned",
+        "visualOmitted": false,
+        "warnings": []
+      },
+      "size": 4,
+      "source": "directory-picker",
+      "supportReason": "Contenuto eseguibile rilevato dalla firma binaria e bloccato.",
+      "warnings": []
+    },
+    {
+      "adapter": {
+        "conversionStatus": "not-applicable",
+        "id": "text",
+        "version": null
+      },
+      "capabilityLevel": "B",
+      "category": "text",
+      "compressedSize": 5,
+      "detectionMethod": "text-heuristic",
+      "encoding": "utf-8",
+      "errors": [],
+      "extension": "log",
+      "fileId": "file_a8b0aca9e56bc89e97cb915d586b5b4d9afea7eaf24a412ca1da743663a921aa",
+      "inclusion": {
+        "included": false,
+        "matchedGlob": "dist/**",
+        "reason": "excluded-glob"
+      },
+      "integrity": {
+        "algorithm": "SHA-256",
+        "error": null,
+        "status": "pending",
+        "value": null
+      },
+      "isText": true,
+      "lastModified": 2000,
+      "mimeDeclared": "text/plain",
+      "mimeDetected": "text/plain",
+      "name": "debug.log",
+      "normalizedPath": "dist/debug.log",
+      "originalPath": "dist/debug.log",
+      "parentDirectoryId": "dir_dd6eb18f463f8111b3e50b87b775a6c2c544bc61a0f6eba069c57d0f0a94c4ba",
+      "representations": {
+        "manifest": {
+          "pointer": "/files/1",
+          "recorded": true
+        },
+        "markdown": {
+          "anchors": [],
+          "encoding": "utf-8",
+          "error": null,
+          "extractedBytes": 0,
+          "extractedCharacters": 0,
+          "lineCount": 0,
+          "newlineNormalization": null,
+          "originalBytes": 5,
+          "parts": [],
+          "replacementCharacters": 0,
+          "status": "not-applicable",
+          "truncated": false,
+          "usedFallback": false
+        },
+        "pdf": {
+          "pages": [],
+          "parts": [],
+          "status": "not-applicable"
+        }
+      },
+      "riskLevel": "low",
+      "risks": [],
+      "security": {
+        "categories": [],
+        "error": null,
+        "excluded": false,
+        "findingCount": 0,
+        "highSeverityCount": 0,
+        "mediumSeverityCount": 0,
+        "redactionCount": 0,
+        "scanTruncated": false,
+        "status": "not-scanned",
+        "visualOmitted": false,
+        "warnings": []
+      },
+      "size": 5,
+      "source": "directory-picker",
+      "supportReason": "Testo rilevato senza un formato affidabile; estrazione generica con segnalazione.",
+      "warnings": []
+    },
+    {
+      "adapter": {
+        "conversionStatus": "not-applicable",
+        "id": "text",
+        "version": null
+      },
+      "capabilityLevel": "A",
+      "category": "text",
+      "compressedSize": 5,
+      "detectionMethod": "extension",
+      "encoding": "utf-8",
+      "errors": [],
+      "extension": "txt",
+      "fileId": "file_aaf83f8e921bc9f6c7d2dcc58e2a084f621a2386b43bacd99d5d57fad8007947",
+      "inclusion": {
+        "included": false,
+        "matchedGlob": null,
+        "reason": "excluded-manual"
+      },
+      "integrity": {
+        "algorithm": "SHA-256",
+        "error": null,
+        "status": "pending",
+        "value": null
+      },
+      "isText": true,
+      "lastModified": 3000,
+      "mimeDeclared": "text/plain",
+      "mimeDetected": "text/plain",
+      "name": "notes.txt",
+      "normalizedPath": "docs/notes.txt",
+      "originalPath": "docs/notes.txt",
+      "parentDirectoryId": "dir_9740a22055133614156f91d2d7d3f864e3ad65c35498ae1bc0f883fa358626da",
+      "representations": {
+        "manifest": {
+          "pointer": "/files/2",
+          "recorded": true
+        },
+        "markdown": {
+          "anchors": [],
+          "encoding": "utf-8",
+          "error": null,
+          "extractedBytes": 0,
+          "extractedCharacters": 0,
+          "lineCount": 0,
+          "newlineNormalization": null,
+          "originalBytes": 5,
+          "parts": [],
+          "replacementCharacters": 0,
+          "status": "not-applicable",
+          "truncated": false,
+          "usedFallback": false
+        },
+        "pdf": {
+          "pages": [],
+          "parts": [],
+          "status": "not-applicable"
+        }
+      },
+      "riskLevel": "low",
+      "risks": [],
+      "security": {
+        "categories": [],
+        "error": null,
+        "excluded": false,
+        "findingCount": 0,
+        "highSeverityCount": 0,
+        "mediumSeverityCount": 0,
+        "redactionCount": 0,
+        "scanTruncated": false,
+        "status": "not-scanned",
+        "visualOmitted": false,
+        "warnings": []
+      },
+      "size": 5,
+      "source": "directory-picker",
+      "supportReason": "Contenuto testuale leggibile integralmente con adapter generico.",
+      "warnings": []
+    },
+    {
+      "adapter": {
+        "conversionStatus": "not-started",
+        "id": "text",
+        "version": null
+      },
+      "capabilityLevel": "A",
+      "category": "text",
+      "compressedSize": 9,
+      "detectionMethod": "extension",
+      "encoding": "utf-8",
+      "errors": [],
+      "extension": "md",
+      "fileId": "file_2cd3579d8f25bc628a3a14d82763a010ba32b03f9cb8d83739744ba497aa446e",
+      "inclusion": {
+        "included": true,
+        "matchedGlob": null,
+        "reason": "selected"
+      },
+      "integrity": {
+        "algorithm": "SHA-256",
+        "error": null,
+        "status": "pending",
+        "value": null
+      },
+      "isText": true,
+      "lastModified": 1000,
+      "mimeDeclared": "text/markdown",
+      "mimeDetected": "text/markdown",
+      "name": "README.md",
+      "normalizedPath": "README.md",
+      "originalPath": "README.md",
+      "parentDirectoryId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+      "representations": {
+        "manifest": {
+          "pointer": "/files/3",
+          "recorded": true
+        },
+        "markdown": {
+          "anchors": [],
+          "encoding": "utf-8",
+          "error": null,
+          "extractedBytes": 0,
+          "extractedCharacters": 0,
+          "lineCount": 0,
+          "newlineNormalization": null,
+          "originalBytes": 9,
+          "parts": [],
+          "replacementCharacters": 0,
+          "status": "not-started",
+          "truncated": false,
+          "usedFallback": false
+        },
+        "pdf": {
+          "pages": [],
+          "parts": [],
+          "status": "not-started"
+        }
+      },
+      "riskLevel": "low",
+      "risks": [],
+      "security": {
+        "categories": [],
+        "error": null,
+        "excluded": false,
+        "findingCount": 0,
+        "highSeverityCount": 0,
+        "mediumSeverityCount": 0,
+        "redactionCount": 0,
+        "scanTruncated": false,
+        "status": "not-scanned",
+        "visualOmitted": false,
+        "warnings": []
+      },
+      "size": 9,
+      "source": "directory-picker",
+      "supportReason": "Contenuto testuale leggibile integralmente con adapter generico.",
+      "warnings": []
+    }
+  ],
+  "generatedAt": "2026-07-20T12:00:00.000Z",
+  "input": {
+    "importIssues": [],
+    "logicalBytes": 23,
+    "source": "directory-picker",
+    "sourceBytes": 23
+  },
+  "instructions": {
+    "entryPoint": "manifest",
+    "steps": [
+      "Leggi questo manifest come indice autorevole prima degli altri output.",
+      "Usa sempre i percorsi originali e non confondere file omonimi.",
+      "Consulta il PDF per la rappresentazione visuale e il Markdown per testo, codice e tabelle.",
+      "Dichiara quando un file è parziale, escluso, bloccato o non ancora convertito.",
+      "In modalità multipart attendi tutte le parti dichiarate prima dell’analisi."
+    ]
+  },
+  "mediaType": "application/vnd.ai-bundle-studio.manifest+json",
+  "outputs": [
+    {
+      "family": "documents",
+      "kind": "pdf",
+      "parts": [],
+      "sha256": null,
+      "status": "planned"
+    },
+    {
+      "family": "content",
+      "kind": "markdown",
+      "parts": [],
+      "sha256": null,
+      "status": "planned"
+    },
+    {
+      "family": "manifest",
+      "kind": "json",
+      "parts": [],
+      "sha256": null,
+      "status": "generated"
+    }
+  ],
+  "preflight": {
+    "estimates": {
+      "estimatedPeakMemory": {
+        "maxBytes": 46,
+        "minBytes": 32
+      },
+      "manifest": {
+        "maxBytes": 7200,
+        "minBytes": 2800
+      },
+      "markdown": {
+        "maxBytes": 1226,
+        "minBytes": 419
+      },
+      "pdf": {
+        "maxBytes": 915,
+        "minBytes": 3
+      }
+    },
+    "policy": {
+      "highFileBytes": 209715200,
+      "maxConcurrentReads": 4,
+      "maxSignatureBytes": 16384,
+      "mediumCompressionRatio": 50,
+      "mediumFileBytes": 52428800,
+      "multipartOutputBytes": 104857600,
+      "quickPreviewFileCount": 10000,
+      "quickPreviewLogicalBytes": 786432000
+    },
+    "recommendation": {
+      "confidence": "medium",
+      "mode": "quick-preview",
+      "reason": "Volume o rischi elevati: iniziare da manifest, documentazione principale e campioni riduce allocazioni premature."
+    },
+    "status": "complete"
+  },
+  "projectName": "Demo - Project",
+  "schemaVersion": "1.0.0",
+  "security": {
+    "categoryCounts": {
+      "access-token": 0,
+      "cloud-credential": 0,
+      "connection-string": 0,
+      "high-entropy": 0,
+      "jwt": 0,
+      "password-assignment": 0,
+      "private-key": 0,
+      "sensitive-filename": 0
+    },
+    "excludedFileCount": 0,
+    "failedScanCount": 0,
+    "findingCount": 0,
+    "flaggedFileCount": 0,
+    "mode": "report-only",
+    "policy": {
+      "highEntropyThreshold": 4.2,
+      "maxCandidateLength": 512,
+      "maxCharactersPerFile": 2000000,
+      "maxFindingsPerFile": 100,
+      "minHighEntropyLength": 24,
+      "scanHighEntropy": true
+    },
+    "redactionCount": 0,
+    "scannedFileCount": 0,
+    "truncatedScanCount": 0,
+    "visualOmittedFileCount": 0
+  },
+  "settings": {
+    "exclusionGlobs": [
+      "dist/**"
+    ],
+    "includeExtractedText": true,
+    "language": "it",
+    "nestedArchiveDepth": 0,
+    "outputMode": "quick-preview",
+    "secretHandling": "report-only"
+  },
+  "sharding": {
+    "applied": false,
+    "mode": "quick-preview",
+    "parts": []
+  },
+  "summary": {
+    "blockedFileCount": 1,
+    "capabilityCounts": {
+      "A": 2,
+      "B": 1,
+      "C": 0,
+      "D": 0,
+      "E": 1
+    },
+    "directoryCount": 4,
+    "excludedFileCount": 3,
+    "fileCount": 4,
+    "includedFileCount": 1,
+    "includedLogicalBytes": 9,
+    "logicalBytes": 23,
+    "riskCounts": {
+      "high": 1,
+      "low": 3,
+      "medium": 0
+    },
+    "sourceBytes": 23
+  },
+  "tree": {
+    "children": [
+      {
+        "children": [
+          {
+            "children": [],
+            "kind": "file",
+            "name": "program.bin",
+            "nodeId": "file_6ec177608031d56cc34d113266c7e4cc96837f2d63a3f5b7b5bcbc9ffe3f90dd",
+            "normalizedPath": "bin/program.bin"
+          }
+        ],
+        "kind": "directory",
+        "name": "bin",
+        "nodeId": "dir_7f04248534a1faa2e4eb84ba451309c6b9595a3cc6ce6b23c3d2e6fe5ffb763e",
+        "normalizedPath": "bin"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "kind": "file",
+            "name": "debug.log",
+            "nodeId": "file_a8b0aca9e56bc89e97cb915d586b5b4d9afea7eaf24a412ca1da743663a921aa",
+            "normalizedPath": "dist/debug.log"
+          }
+        ],
+        "kind": "directory",
+        "name": "dist",
+        "nodeId": "dir_dd6eb18f463f8111b3e50b87b775a6c2c544bc61a0f6eba069c57d0f0a94c4ba",
+        "normalizedPath": "dist"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "kind": "file",
+            "name": "notes.txt",
+            "nodeId": "file_aaf83f8e921bc9f6c7d2dcc58e2a084f621a2386b43bacd99d5d57fad8007947",
+            "normalizedPath": "docs/notes.txt"
+          }
+        ],
+        "kind": "directory",
+        "name": "docs",
+        "nodeId": "dir_9740a22055133614156f91d2d7d3f864e3ad65c35498ae1bc0f883fa358626da",
+        "normalizedPath": "docs"
+      },
+      {
+        "children": [],
+        "kind": "directory",
+        "name": "empty",
+        "nodeId": "dir_954f03a168493daf5680bc2c270d7100f23e8b732a9c894bbec944d9115162f2",
+        "normalizedPath": "empty"
+      },
+      {
+        "children": [],
+        "kind": "file",
+        "name": "README.md",
+        "nodeId": "file_2cd3579d8f25bc628a3a14d82763a010ba32b03f9cb8d83739744ba497aa446e",
+        "normalizedPath": "README.md"
+      }
+    ],
+    "kind": "directory",
+    "name": "Progetto",
+    "nodeId": "dir_7a9792e95e82f2fcec287fff9959633053c3e59e25faba5186ed079768c7eea0",
+    "normalizedPath": ""
+  }
+}
+"
+`;

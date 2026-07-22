@@ -1,0 +1,45 @@
+import type { DocumentsArtifact } from '../output/types'
+import type { MarkdownArtifact, MarkdownArtifactSnapshot } from './types'
+
+export function createMarkdownArtifactSnapshot(artifact: MarkdownArtifact, documents?: DocumentsArtifact): MarkdownArtifactSnapshot {
+  return {
+    generatedAt: artifact.generatedAt,
+    partCount: artifact.parts.length,
+    totalBytes: artifact.totalBytes,
+    completedFiles: artifact.records.filter((record) => record.status === 'completed').length,
+    partialFiles: artifact.records.filter((record) => record.status === 'partial').length,
+    failedFiles: artifact.records.filter((record) => record.status === 'failed').length,
+    spreadsheetWorkbooks: artifact.spreadsheetWorkbooks.length,
+    spreadsheetSheets: artifact.spreadsheetWorkbooks.reduce((total, workbook) => total + workbook.sheets.length, 0),
+    spreadsheetFormulaCells: artifact.spreadsheetWorkbooks.reduce((total, workbook) => total + workbook.formulaCells, 0),
+    spreadsheetPreviewPages: artifact.spreadsheetPreview?.pageCount ?? 0,
+    spreadsheetPreviewBytes: artifact.spreadsheetPreview?.byteLength ?? 0,
+    pdfDocuments: artifact.pdfDocuments.length,
+    pdfSourcePages: artifact.pdfDocuments.reduce((total, pdf) => total + pdf.importedPageCount, 0),
+    imageFiles: artifact.imageAssets.length,
+    imageVisualPages: artifact.imageAssets.filter((image) => image.bytes !== null).length,
+    officeDocuments: artifact.officeAssets.length,
+    docxDocuments: artifact.officeAssets.filter((asset) => asset.kind === 'docx').length,
+    presentations: artifact.officeAssets.filter((asset) => asset.kind === 'pptx').length,
+    presentationSlides: artifact.officeAssets.reduce((total, asset) => total + (asset.kind === 'pptx' ? asset.slides.length : 0), 0),
+    officePreviewPages: artifact.officePreview?.pageCount ?? 0,
+    officePreviewBytes: artifact.officePreview?.byteLength ?? 0,
+    documentsPages: documents?.pageCount ?? 0,
+    documentsBytes: documents?.byteLength ?? 0,
+    documentsValid: documents?.validation.valid ?? false,
+    securityMode: artifact.securitySummary.mode,
+    secretFlaggedFiles: artifact.securitySummary.flaggedFileCount,
+    secretFindings: artifact.securitySummary.findingCount,
+    secretRedactions: artifact.securitySummary.redactionCount,
+    secretExcludedFiles: artifact.securitySummary.excludedFileCount,
+    secretVisualOmissions: artifact.securitySummary.visualOmittedFileCount,
+    sharded: artifact.sharded,
+    valid: artifact.validation.valid && (documents?.validation.valid ?? true),
+    partSummaries: artifact.parts.map((part) => ({
+      name: part.name,
+      byteLength: part.byteLength,
+      anchorCount: part.anchors.length,
+    })),
+    preview: artifact.parts[0]?.content.slice(0, 6000) ?? '',
+  }
+}

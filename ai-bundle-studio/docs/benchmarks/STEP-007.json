@@ -1,0 +1,16 @@
+{
+  "step": "STEP-007",
+  "environment": {
+    "runtime": "Node.js 22 / Vitest JSDOM",
+    "note": "Single-host diagnostic; not a product performance promise. PDF text extraction is verified separately in compiled Chromium."
+  },
+  "pdfImageAssembly": {
+    "fixture": "one-25-page-pdf-eight-png-images",
+    "sourcePdfBytes": 11845,
+    "sourcePdfPages": 25,
+    "images": 8,
+    "outputPages": 46,
+    "outputBytes": 28585,
+    "elapsedMs": 63.75
+  }
+}

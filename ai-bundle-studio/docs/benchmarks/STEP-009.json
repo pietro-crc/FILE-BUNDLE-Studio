@@ -1,0 +1,16 @@
+{
+  "step": "STEP-009",
+  "environment": {
+    "node": "22.16.0",
+    "platform": "linux-x64"
+  },
+  "fixture": "300-text-files-60-flagged",
+  "files": 300,
+  "flaggedFiles": 60,
+  "findings": 120,
+  "redactions": 60,
+  "markdownBytes": 295519,
+  "elapsedMs": 59.76,
+  "method": "isolated deterministic core benchmark",
+  "disclaimer": "Diagnostic baseline; not a product performance promise."
+}
