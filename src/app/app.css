@@ -2277,7 +2277,7 @@ body:has(.application-shell--landing) {
   font-size: clamp(1.75rem, 3.2vw, 2.4rem);
   font-weight: 750;
   letter-spacing: -0.035em;
-  color: #ffffff;
+  color: var(--color-text);
   line-height: 1.15;
 }
 
@@ -2296,7 +2296,7 @@ body:has(.application-shell--landing) {
   border: 1px solid var(--color-border);
   border-radius: 16px;
   background: var(--color-surface);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
@@ -2329,7 +2329,7 @@ body:has(.application-shell--landing) {
 .dropzone-canvas:hover,
 .dropzone-canvas--active {
   border-color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent-soft, #2e264a) 40%, var(--color-canvas));
+  background: color-mix(in srgb, var(--color-accent-soft) 40%, var(--color-canvas));
 }
 
 .dropzone-format-tags {
