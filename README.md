@@ -123,49 +123,48 @@ ai-bundle-studio/
 
 AI Bundle Studio is designed to feel calm, inspectable, and technically trustworthy. The interface uses generous whitespace, restrained surfaces, strong typography, persistent privacy status, and explicit evidence for every capability, warning, omission, and output state.
 
-### Landing and product promise
+The following screenshots are fresh captures from the current compiled application. They are kept in `ai-bundle-studio/docs/screenshots/` and should be refreshed when a major visual change lands.
 
-The landing screen establishes the six-step workflow, local-processing status, primary action, and three coordinated output families.
+### Current landing and acquisition
 
-![AI Bundle Studio landing screen — desktop light theme](ai-bundle-studio/docs/screenshots/STEP-001-desktop-light.png)
+The current landing screen establishes the local-processing status, source acquisition actions, and in-browser processing promise.
 
-### Preflight and trust through visibility
+![AI Bundle Studio current landing screen — desktop dark theme](ai-bundle-studio/docs/screenshots/current-landing-desktop-dark.png)
 
-The preflight screen exposes classification, support levels, risk, memory estimates, and file-level inclusion decisions before processing begins.
+### Current mobile acquisition layout
 
-![AI Bundle Studio preflight screen — desktop light theme](ai-bundle-studio/docs/screenshots/STEP-003-preflight-desktop.png)
+The acquisition workspace remains usable on a narrow viewport: the privacy status stays visible, source actions stack cleanly, and processing remains clearly disabled until a project is ready.
 
-### Results and output validation
+![AI Bundle Studio current landing screen — mobile dark theme](ai-bundle-studio/docs/screenshots/current-landing-mobile-dark.png)
 
-The results screen presents PDF, Markdown, and JSON as coordinated artifact families, with validation and availability states shown directly in the interface.
+### Current results and output delivery
 
-![AI Bundle Studio results screen — desktop light theme](ai-bundle-studio/docs/screenshots/STEP-008-office-desktop.png)
+The current results screen presents the generated package, validation warnings, individual output formats, and usage instructions for attaching the bundle to an AI assistant.
 
-### Mobile dark theme
+![AI Bundle Studio current results screen — desktop dark theme](ai-bundle-studio/docs/screenshots/current-results-desktop-dark.png)
 
-On narrow screens, the workflow navigation becomes a compact grid and content cards stack vertically without hiding status or validation information.
+### Current mobile results layout
 
-![AI Bundle Studio results screen — mobile dark theme](ai-bundle-studio/docs/screenshots/STEP-008-office-mobile-dark.png)
+On narrow screens, the current result cards stack vertically while keeping download actions, warnings, and privacy status visible.
+
+![AI Bundle Studio current results screen — mobile dark theme](ai-bundle-studio/docs/screenshots/current-results-mobile-dark.png)
 
 ### Experience model
 
 ```text
-Introduction → Import → Preflight → Configuration → Processing → Results
+Acquire source → Process locally → Deliver outputs
 ```
 
-| Step | User question | Design responsibility |
+| Phase | User question | Design responsibility |
 | --- | --- | --- |
-| Introduction | Why should I trust this tool? | Explain local processing, scope, and limitations |
-| Import | What am I giving the tool? | Offer clear file, folder, and ZIP entry points |
-| Preflight | What will happen to each file? | Surface support, risk, estimates, and inclusion |
-| Configuration | What policy should apply? | Make limits and secret-handling choices explicit |
-| Processing | Is the pipeline still working? | Show progress, phase, cancellation, and isolation |
-| Results | What can I rely on? | Present artifacts, warnings, mappings, and validation |
+| Acquire source | What am I giving the tool? | Offer clear ZIP, folder, and multiple-file entry points |
+| Process locally | Is the pipeline safe and still working? | Show local status, progress, cancellation, limits, and isolation |
+| Deliver outputs | What can I rely on? | Present the package, formats, warnings, instructions, and validation |
 
 ### Visual system
 
 - **Typography:** system-first sans serif — `Inter`, `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, and `Roboto` — with large, tightly tracked headlines and compact uppercase metadata labels.
-- **Layout:** `72rem` maximum content width, a desktop navigation rail, flexible content column, sticky header, and stacked mobile cards down to a `320px` viewport.
+- **Layout:** centered studio workspace card, persistent header controls, clear processing/result surfaces, and stacked mobile cards down to a `320px` viewport.
 - **Light theme:** `#fafafa` canvas, white surfaces, near-black primary text, neutral borders, and emerald success states.
 - **Dark theme:** `#09090b` canvas, `#121215` surfaces, light primary text, dark neutral borders, and preserved semantic success/warning/danger colors.
 - **Interaction:** primary buttons advance the workflow, secondary buttons inspect or branch, disabled controls explain unavailable capabilities, and focus-visible outlines remain present.
