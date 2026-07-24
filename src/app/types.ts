@@ -1,5 +1,5 @@
 import type { ImportSessionSnapshot } from '../core/vfs/snapshot'
-import type { VirtualFileSystem, ImportResult } from '../core/vfs/types'
+import type { VirtualFileSystem } from '../core/vfs/types'
 import type { PreflightReport, PreflightSelection } from '../core/preflight/types'
 import type { ManifestArtifact } from '../core/manifest/types'
 import type { MarkdownArtifactSnapshot, MarkdownGenerationProgress } from '../core/markdown/types'
