@@ -37,7 +37,7 @@ Files are treated as untrusted input. The application applies bounded reads, pat
 
 Secret detection never places matched values in logs, warnings, or the manifest. Redaction affects derived output only; original file bytes remain unchanged.
 
-See the [security baseline](ai-bundle-studio/docs/SECURITY.md) and [threat model](ai-bundle-studio/docs/THREAT_MODEL.md) for the detailed controls and known residual risks.
+See the [security baseline](docs/SECURITY.md) and [threat model](docs/THREAT_MODEL.md) for the detailed controls and known residual risks.
 
 ## Supported formats
 
@@ -52,7 +52,7 @@ See the [security baseline](ai-bundle-studio/docs/SECURITY.md) and [threat model
 | ZIP | Safe inventory and bounded entry reads; nested archives are not recursively opened |
 | Executables and unsupported binaries | Inventory and risk reporting only; never executed |
 
-The [file support matrix](ai-bundle-studio/docs/FILE_SUPPORT_MATRIX.md) is the authoritative source for capability levels, limitations, and output claims.
+The [file support matrix](docs/FILE_SUPPORT_MATRIX.md) is the authoritative source for capability levels, limitations, and output claims.
 
 ## Quick start
 
@@ -64,7 +64,6 @@ The [file support matrix](ai-bundle-studio/docs/FILE_SUPPORT_MATRIX.md) is the a
 ### Install and run
 
 ```bash
-cd ai-bundle-studio
 npm ci
 npm run dev
 ```
@@ -74,12 +73,11 @@ Open the local URL printed by Vite.
 ### Production build
 
 ```bash
-cd ai-bundle-studio
 npm run build
 npm run preview
 ```
 
-The production bundle is written to `ai-bundle-studio/dist/`. For a repository deployed under a subpath, set `VITE_BASE_PATH` when building:
+The production bundle is written to `dist/`. For a repository deployed under a subpath, set `VITE_BASE_PATH` when building:
 
 ```bash
 VITE_BASE_PATH=/ai-bundle-studio/ npm run build
@@ -87,7 +85,7 @@ VITE_BASE_PATH=/ai-bundle-studio/ npm run build
 
 ## Development commands
 
-Run these from `ai-bundle-studio/`:
+Run these from the repository root:
 
 ```bash
 npm run lint          # Static analysis
@@ -108,46 +106,45 @@ npm run quality && npm test && npm run test:e2e
 ## Project layout
 
 ```text
-ai-bundle-studio/
-├── src/app/             Application composition and workflow state
-├── src/core/            VFS, preflight, format adapters, security, and outputs
-├── src/features/        Import, configuration, processing, and results screens
-├── src/ui/              Reusable components and design tokens
-├── src/schemas/         Versioned interoperability schemas
-├── tests/               Unit, integration, benchmark, and browser tests
-├── docs/                Architecture, security, support, decisions, and roadmap
-└── scripts/              Repeatable quality, benchmark, and E2E helpers
+src/app/                 Application composition and workflow state
+src/core/                VFS, preflight, format adapters, security, and outputs
+src/features/            Import, configuration, processing, and results screens
+src/ui/                  Reusable components and design tokens
+src/schemas/             Versioned interoperability schemas
+tests/                   Unit, integration, benchmark, and browser tests
+docs/                    Architecture, security, support, decisions, and roadmap
+scripts/                 Repeatable quality, benchmark, and E2E helpers
 ```
 
 ## Design and visual references
 
 AI Bundle Studio is designed to feel calm, inspectable, and technically trustworthy. The interface uses generous whitespace, restrained surfaces, strong typography, persistent privacy status, and explicit evidence for every capability, warning, omission, and output state.
 
-The following screenshots are fresh captures from the current compiled application. They are kept in `ai-bundle-studio/docs/screenshots/` and should be refreshed when a major visual change lands.
+The following screenshots are fresh captures from the current compiled application. They are kept in `docs/screenshots/` and should be refreshed when a major visual change lands.
 
 ### Current landing and acquisition
 
 The current landing screen establishes the local-processing status, source acquisition actions, and in-browser processing promise.
 
-![AI Bundle Studio current landing screen — desktop dark theme](ai-bundle-studio/docs/screenshots/current-landing-desktop-dark.png)
+![AI Bundle Studio current landing screen — desktop dark theme](docs/screenshots/current-landing-desktop-dark.png)
 
 ### Current mobile acquisition layout
 
 The acquisition workspace remains usable on a narrow viewport: the privacy status stays visible, source actions stack cleanly, and processing remains clearly disabled until a project is ready.
 
-![AI Bundle Studio current landing screen — mobile dark theme](ai-bundle-studio/docs/screenshots/current-landing-mobile-dark.png)
+![AI Bundle Studio current landing screen — mobile dark theme](docs/screenshots/current-landing-mobile-dark.png)
 
 ### Current results and output delivery
 
 The current results screen presents the generated package, validation warnings, individual output formats, and usage instructions for attaching the bundle to an AI assistant.
 
-![AI Bundle Studio current results screen — desktop dark theme](ai-bundle-studio/docs/screenshots/current-results-desktop-dark.png)
+![AI Bundle Studio current results screen — desktop dark theme](docs/screenshots/current-results-desktop-dark.png)
 
 ### Current mobile results layout
 
 On narrow screens, the current result cards stack vertically while keeping download actions, warnings, and privacy status visible.
 
-![AI Bundle Studio current results screen — mobile dark theme](ai-bundle-studio/docs/screenshots/current-results-mobile-dark.png)
+![AI Bundle Studio current results screen — mobile dark theme](docs/screenshots/current-results-mobile-dark.png)
 
 ### Experience model
 
@@ -170,18 +167,18 @@ Acquire source → Process locally → Deliver outputs
 - **Interaction:** primary buttons advance the workflow, secondary buttons inspect or branch, disabled controls explain unavailable capabilities, and focus-visible outlines remain present.
 - **Accessibility:** semantic headings and landmarks, keyboard navigation, skip link, readable contrast, non-color status labels, reduced-motion support, and no horizontal overflow.
 
-The implementation source of truth is [`ai-bundle-studio/src/ui/design-system.css`](ai-bundle-studio/src/ui/design-system.css) for tokens and controls, and [`ai-bundle-studio/src/app/app.css`](ai-bundle-studio/src/app/app.css) for shell and responsive layout.
+The implementation source of truth is [`src/ui/design-system.css`](src/ui/design-system.css) for tokens and controls, and [`src/app/app.css`](src/app/app.css) for shell and responsive layout.
 
 ## Documentation
 
-- [Product specification](ai-bundle-studio/docs/PRODUCT_SPEC.md)
-- [Architecture](ai-bundle-studio/docs/ARCHITECTURE.md)
-- [File support matrix](ai-bundle-studio/docs/FILE_SUPPORT_MATRIX.md)
-- [Security baseline](ai-bundle-studio/docs/SECURITY.md)
-- [Threat model](ai-bundle-studio/docs/THREAT_MODEL.md)
-- [Roadmap](ai-bundle-studio/docs/ROADMAP.md)
-- [Contributing guide](ai-bundle-studio/CONTRIBUTING.md)
-- [Changelog](ai-bundle-studio/CHANGELOG.md)
+- [Product specification](docs/PRODUCT_SPEC.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [File support matrix](docs/FILE_SUPPORT_MATRIX.md)
+- [Security baseline](docs/SECURITY.md)
+- [Threat model](docs/THREAT_MODEL.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ## Project status
 
@@ -191,4 +188,4 @@ Worker orchestration, final download and sharding workflows, PWA/offline support
 
 ## License
 
-AI Bundle Studio is released under the [MIT License](ai-bundle-studio/LICENSE). Third-party dependencies retain their respective licenses.
+AI Bundle Studio is released under the [MIT License](LICENSE). Third-party dependencies retain their respective licenses.
