@@ -119,29 +119,81 @@ body:has(.application-shell--landing) {
 
 .privacy-status {
   display: inline-flex;
-  gap: 0.65rem;
   align-items: center;
-  min-height: 2.75rem;
-  padding: 0.45rem 0.7rem;
-  color: var(--color-success);
-  border: 1px solid color-mix(in srgb, var(--color-success) 40%, var(--color-border));
-  border-radius: 999px;
-  background: var(--color-success-soft);
-}
-
-.privacy-status>span {
-  display: grid;
-  gap: 0.05rem;
-}
-
-.privacy-status strong {
-  color: var(--color-text);
+  gap: 0.6rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
   font-size: 0.78rem;
+  background: color-mix(in srgb, var(--color-success-soft) 40%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-success) 35%, transparent);
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--color-success) 12%, transparent);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.privacy-status span span {
+.privacy-status:hover {
+  border-color: color-mix(in srgb, var(--color-success) 55%, transparent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-success) 22%, transparent);
+}
+
+.privacy-status__indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.55rem;
+  height: 0.55rem;
+  flex-shrink: 0;
+}
+
+.privacy-status__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-success);
+}
+
+.privacy-status__ping {
+  position: absolute;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-success);
+  opacity: 0.75;
+  animation: privacy-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes privacy-ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.privacy-status__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.privacy-status__badge {
+  font-weight: 750;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--color-success);
+  text-transform: uppercase;
+}
+
+.privacy-status__dot-sep {
+  color: color-mix(in srgb, var(--color-success) 45%, transparent);
+  font-size: 0.65rem;
+}
+
+.privacy-status__detail {
   color: var(--color-text-muted);
-  font-size: 0.7rem;
+  font-weight: 500;
+  font-size: 0.78rem;
 }
 
 .theme-switcher {
@@ -863,13 +915,10 @@ body:has(.application-shell--landing) {
     align-items: flex-end;
   }
 
-  .privacy-status span span,
+  .privacy-status__detail,
+  .privacy-status__dot-sep,
   .theme-switcher__button span {
     display: none;
-  }
-
-  .privacy-status>span {
-    display: block;
   }
 
   .principles-grid,
