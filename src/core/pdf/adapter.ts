@@ -1,3 +1,4 @@
+import { safeDynamicImport } from '../utils/dynamic-import'
 import { sha256Hex } from '../hash/sha256'
 import type { ManifestFileRecord } from '../manifest/types'
 import type { TextExtractionRecord } from '../markdown/types'
@@ -113,8 +114,8 @@ export async function extractPdfFile(
   const sha256 = await sha256Hex(bytes)
 
   const [{ getDocument }, workerModule] = await Promise.all([
-    import('pdfjs-dist'),
-    import('pdfjs-dist/build/pdf.worker.min.mjs'),
+    safeDynamicImport(() => import('pdfjs-dist')),
+    safeDynamicImport(() => import('pdfjs-dist/build/pdf.worker.min.mjs')),
   ])
   ;(globalThis as typeof globalThis & { pdfjsWorker?: unknown }).pdfjsWorker = workerModule
 

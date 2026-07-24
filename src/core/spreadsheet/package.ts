@@ -1,3 +1,4 @@
+import { safeDynamicImport } from '../utils/dynamic-import'
 import type { SpreadsheetPolicy } from './types'
 
 export interface SpreadsheetPackage {
@@ -21,7 +22,7 @@ export async function readSpreadsheetPackage(
     throw new RangeError(`Workbook oltre il limite di ${policy.maxWorkbookBytes} byte.`)
   }
   const bytes = new Uint8Array(buffer)
-  const { unzipSync } = await import('fflate')
+  const { unzipSync } = await safeDynamicImport(() => import('fflate'))
   const inventory: { name: string; originalSize: number }[] = []
   let selectedTotal = 0
   let output: Record<string, Uint8Array>

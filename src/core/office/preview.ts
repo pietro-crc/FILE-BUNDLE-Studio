@@ -1,4 +1,5 @@
 import type { PDFDocument, PDFFont, PDFImage, PDFPage } from 'pdf-lib'
+import { safeDynamicImport } from '../utils/dynamic-import'
 import type { DocxDocumentAsset, OfficeAsset, OfficeImageAsset, OfficePolicy, OfficePreviewArtifact, OfficePreviewPage, PptxPresentationAsset } from './types'
 
 function safe(value: string): string {
@@ -136,7 +137,7 @@ async function renderPptx(
 
 export async function renderOfficePreviewPdf(assets: readonly OfficeAsset[], policy: OfficePolicy): Promise<OfficePreviewArtifact | null> {
   if (assets.length === 0) return null
-  const { PDFDocument, StandardFonts } = await import('pdf-lib')
+  const { PDFDocument, StandardFonts } = await safeDynamicImport(() => import('pdf-lib'))
   const document = await PDFDocument.create()
   const font = await document.embedFont(StandardFonts.Helvetica)
   const records: OfficePreviewPage[] = []

@@ -1,3 +1,4 @@
+import { safeDynamicImport } from '../utils/dynamic-import'
 import type { OfficeMetadata, OfficePolicy } from './types'
 
 export interface OfficePackageInventoryEntry {
@@ -34,7 +35,7 @@ export async function readOfficePackage(
 ): Promise<OfficePackage> {
   if (buffer.byteLength > policy.maxDocumentBytes) throw new RangeError(`Documento Office oltre ${policy.maxDocumentBytes} byte.`)
   const bytes = new Uint8Array(buffer)
-  const { unzipSync } = await import('fflate')
+  const { unzipSync } = await safeDynamicImport(() => import('fflate'))
   const inventory: OfficePackageInventoryEntry[] = []
   let totalUncompressedBytes = 0
   let output: Record<string, Uint8Array>

@@ -1,3 +1,4 @@
+import { safeDynamicImport } from '../utils/dynamic-import'
 import { sha256Hex } from '../hash/sha256'
 import type { ManifestFileRecord } from '../manifest/types'
 import type { TextExtractionRecord } from '../markdown/types'
@@ -67,7 +68,7 @@ export async function extractDocxFile(
   const images: OfficeImageAsset[] = []
   const imageWarnings: string[] = []
   let extractedImageBytes = 0
-  const mammothModule = await import('mammoth/mammoth.browser')
+  const mammothModule = await safeDynamicImport(() => import('mammoth/mammoth.browser'))
   const mammoth = mammothModule.default as unknown as {
     readonly images: { imgElement(converter: (image: { readonly contentType: string; readAsBase64String(): Promise<string> }) => Promise<{ readonly src: string }>): unknown }
     convertToHtml(input: { readonly arrayBuffer: ArrayBuffer }, options: Readonly<Record<string, unknown>>): Promise<{ readonly value: string; readonly messages: readonly { readonly type: string; readonly message: string }[] }>

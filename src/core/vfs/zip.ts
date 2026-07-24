@@ -1,3 +1,4 @@
+import { safeDynamicImport } from '../utils/dynamic-import'
 import { ZipEntryByteSource } from './byte-sources'
 import { createVirtualFileSystemFromPreparedFiles } from './import'
 import { findVirtualPathConflict, normalizeVirtualPath, PathValidationError, type PathPolicy } from './path'
@@ -169,7 +170,7 @@ function readCentralDirectoryFlags(data: Uint8Array, maxEntries: number): Centra
 
 async function inventoryZip(data: Uint8Array, maxEntries: number): Promise<readonly ZipInventoryEntry[]> {
   const flags = readCentralDirectoryFlags(data, maxEntries)
-  const { unzipSync } = await import('fflate')
+  const { unzipSync } = await safeDynamicImport(() => import('fflate'))
   const entries: Array<Omit<ZipInventoryEntry, 'encrypted' | 'dataOffset'>> = []
 
   unzipSync(data, {

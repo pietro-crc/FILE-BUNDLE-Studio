@@ -1,4 +1,5 @@
 import type { ByteSource } from './types'
+import { safeDynamicImport } from '../utils/dynamic-import'
 
 const noOp = () => undefined
 
@@ -129,7 +130,7 @@ export class ZipEntryByteSource implements ByteSource {
       throw new Error(`Metodo ZIP non supportato: ${this.#compressionMethod}.`)
     }
 
-    const { inflate } = await import('fflate')
+    const { inflate } = await safeDynamicImport(() => import('fflate'))
     return new Promise<ArrayBuffer>((resolve, reject) => {
       let settled = false
       let terminate: () => void = noOp
@@ -180,7 +181,7 @@ export class ZipEntryByteSource implements ByteSource {
       throw new Error(`Metodo ZIP non supportato: ${this.#compressionMethod}.`)
     }
 
-    const { Inflate } = await import('fflate')
+    const { Inflate } = await safeDynamicImport(() => import('fflate'))
     const chunks: Uint8Array[] = []
     let outputLength = 0
     let compressedOffset = 0

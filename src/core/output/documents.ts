@@ -1,4 +1,5 @@
 import type { PDFDocument, PDFFont, PDFImage, PDFPage } from 'pdf-lib'
+import { safeDynamicImport } from '../utils/dynamic-import'
 import type { ImageAsset } from '../image/types'
 import type { ManifestArtifact, ManifestFileRecord } from '../manifest/types'
 import type { MarkdownArtifact } from '../markdown/types'
@@ -164,7 +165,7 @@ function drawImagePage(document: PDFDocument, font: PDFFont, entry: PreparedEntr
 async function preparePdfEntry(output: PDFDocument, file: ManifestFileRecord, asset: PdfDocumentAsset | undefined): Promise<PreparedEntry> {
   if (!asset) return { file, adapterId: 'pdf', warnings: [], error: 'PDF extraction failed or the document is encrypted.', kind: 'pdf', pages: [], image: null, sourcePageNumbers: [], status: 'failed' }
   try {
-    const { PDFDocument } = await import('pdf-lib')
+    const { PDFDocument } = await safeDynamicImport(() => import('pdf-lib'))
     const source = await PDFDocument.load(asset.bytes, { ignoreEncryption: false, updateMetadata: false })
     const indices = Array.from({ length: asset.importedPageCount }, (_, index) => index)
     const pages = await output.copyPages(source, indices)
@@ -201,7 +202,7 @@ async function prepareSpreadsheetEntries(
   preview: SpreadsheetPreviewArtifact | null,
 ): Promise<PreparedEntry[]> {
   if (!preview) return []
-  const { PDFDocument } = await import('pdf-lib')
+  const { PDFDocument } = await safeDynamicImport(() => import('pdf-lib'))
   const source = await PDFDocument.load(preview.bytes, { updateMetadata: false })
   const byPath = new Map<string, number[]>()
   preview.pages.forEach((page, index) => {
@@ -237,7 +238,7 @@ async function prepareOfficeEntries(
   preview: OfficePreviewArtifact | null,
 ): Promise<PreparedEntry[]> {
   if (!preview || preview.pageCount === 0) return []
-  const { PDFDocument } = await import('pdf-lib')
+  const { PDFDocument } = await safeDynamicImport(() => import('pdf-lib'))
   const source = await PDFDocument.load(preview.bytes, { updateMetadata: false })
   const groups = new Map<string, { indices: number[]; kind: 'docx' | 'presentation'; sourcePages: number[] }>()
   preview.pages.forEach((page, index) => {
@@ -321,7 +322,7 @@ export async function renderDocumentsPdf(
   overrides?: Partial<DocumentsPolicy>,
 ): Promise<Omit<DocumentsArtifact, 'validation'>> {
   const policy = validatePolicy(overrides)
-  const { PDFDocument, StandardFonts } = await import('pdf-lib')
+  const { PDFDocument, StandardFonts } = await safeDynamicImport(() => import('pdf-lib'))
   const document = await PDFDocument.create()
   const font = await document.embedFont(StandardFonts.Helvetica)
   const pdfAssets = new Map(markdown.pdfDocuments.map((asset) => [asset.fileId, asset]))

@@ -80,20 +80,37 @@ export function App() {
           />
         )
 
-      case 'error':
+      case 'error': {
+        const isModuleLoadError =
+          Boolean(workflow.errorMessage) &&
+          (workflow.errorMessage?.includes('dynamically imported module') ||
+            workflow.errorMessage?.includes('Failed to fetch') ||
+            workflow.errorMessage?.includes('modulo dinamico') ||
+            workflow.errorMessage?.includes('module script failed'))
+
         return (
           <div className="screen screen-error" data-screen-heading tabIndex={-1}>
             <div className="error-banner">
               <h2>An error occurred during processing</h2>
-              <p>{workflow.errorMessage || 'Unexpected error.'}</p>
+              <p>
+                {isModuleLoadError
+                  ? "È stata rilevata un'interruzione di rete o una nuova versione dell'applicazione pubblicata sul server. Ricarica la pagina per sincronizzare i moduli aggiornati."
+                  : workflow.errorMessage || 'Unexpected error.'}
+              </p>
               <div className="error-banner__actions">
-                <Button onClick={workflow.resetAll} variant="primary">
+                {isModuleLoadError && (
+                  <Button onClick={() => window.location.reload()} variant="primary">
+                    Ricarica pagina
+                  </Button>
+                )}
+                <Button onClick={workflow.resetAll} variant={isModuleLoadError ? 'secondary' : 'primary'}>
                   Return to Home
                 </Button>
               </div>
             </div>
           </div>
         )
+      }
     }
   }
 

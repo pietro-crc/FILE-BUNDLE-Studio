@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { PDFDocumentProxy, RenderTask } from 'pdfjs-dist'
+import { safeDynamicImport } from '../../core/utils/dynamic-import'
 
 interface PdfDocumentPreviewProps {
   readonly bytes: Uint8Array | null
