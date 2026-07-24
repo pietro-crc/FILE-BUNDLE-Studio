@@ -47,8 +47,8 @@ export function PdfDocumentPreview({ bytes }: PdfDocumentPreviewProps) {
     void (async () => {
       try {
         const [{ getDocument }, workerModule] = await Promise.all([
-          import('pdfjs-dist'),
-          import('pdfjs-dist/build/pdf.worker.min.mjs'),
+          safeDynamicImport(() => import('pdfjs-dist')),
+          safeDynamicImport(() => import('pdfjs-dist/build/pdf.worker.min.mjs')),
         ])
         ;(globalThis as typeof globalThis & { pdfjsWorker?: unknown }).pdfjsWorker = workerModule
 

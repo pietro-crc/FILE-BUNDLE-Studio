@@ -115,8 +115,8 @@ export function ValidationSummary({
                       <td><span className={`status-tag status-tag--${record.status}`}>{record.status}</span></td>
                       <td>
                         {record.error ? <div className="error-text">{record.error}</div> : null}
-                        {record.warnings.map((w, idx) => (
-                          <div className="warning-text" key={idx}>{w}</div>
+                        {record.warnings.map((w) => (
+                          <div className="warning-text" key={`${record.fileId}-${w}`}>{w}</div>
                         ))}
                       </td>
                     </tr>
@@ -127,8 +127,8 @@ export function ValidationSummary({
                       <td><span className={`status-tag status-tag--${record.status}`}>{record.status}</span></td>
                       <td>
                         {record.error ? <div className="error-text">{record.error}</div> : null}
-                        {record.warnings.map((w, idx) => (
-                          <div className="warning-text" key={idx}>{w}</div>
+                        {record.warnings.map((w) => (
+                          <div className="warning-text" key={`${record.fileId}-${w}`}>{w}</div>
                         ))}
                       </td>
                     </tr>

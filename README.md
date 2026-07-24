@@ -35,13 +35,17 @@ AI Bundle Studio addresses that workflow by preserving the source tree, reportin
 
 ## Privacy and security
 
-All file processing takes place in the browser. The application does not provide user content to a server, persist it in browser storage, or write it to logs.
+AI Bundle Studio is engineered under a strict **Zero-Trust, Local-Only Security Model**.
 
-Files are treated as untrusted input. The application applies bounded reads, path normalization, ZIP structural checks, format signatures, resource limits, and per-file error handling. It does not execute macros, formulas, scripts, executables, or active HTML/SVG content, and it does not bypass password-protected documents.
+### 🔒 Core Security Pillars
 
-Secret detection never places matched values in logs, warnings, or the manifest. Redaction affects derived output only; original file bytes remain unchanged.
+- **100% In-Browser Execution:** All file extraction, parsing, secret scanning, and document generation execute locally inside your browser engine. No files, code, or metadata ever leave your machine.
+- **Zero Telemetry & Zero Persistence:** No remote servers, backend APIs, analytics, tracking cookies, or browser storage persistence (`localStorage`/`IndexedDB`). Data exists solely in temporary memory while processing.
+- **Inert Processing & Defense-in-Depth:** Files are treated as untrusted input. Executables, Office macros, VBA scripts, spreadsheet formulas, and active HTML/SVG elements are never executed or rendered as live code.
+- **Defensive Resource Bounding:** Strict memory, file size, entry count, path depth, and decompression ratio ceilings protect against ZIP bombs, path traversal, and browser memory exhaustion.
+- **Secret Detection & Redaction:** Built-in scanner identifies private keys, API tokens, JWTs, and connection strings. Redaction applies strictly to generated derived outputs—your original source files are never mutated.
 
-See the [security baseline](docs/SECURITY.md) and [threat model](docs/THREAT_MODEL.md) for the detailed controls and known residual risks.
+For complete controls, vulnerability policies, and risk mitigations, review the [Security Baseline](docs/SECURITY.md) and [Threat Model](docs/THREAT_MODEL.md).
 
 ## Supported formats
 
@@ -172,6 +176,18 @@ Acquire source → Process locally → Deliver outputs
 - **Accessibility:** semantic headings and landmarks, keyboard navigation, skip link, readable contrast, non-color status labels, reduced-motion support, and no horizontal overflow.
 
 The implementation source of truth is [`src/ui/design-system.css`](src/ui/design-system.css) for tokens and controls, and [`src/app/app.css`](src/app/app.css) for shell and responsive layout.
+
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for detailed instructions on local development, architectural principles, code conventions, and mandatory quality gates.
+
+### Pre-commit Quality Gate
+
+Before opening a pull request, run the complete local quality gate:
+
+```bash
+npm run quality && npm test && npm run test:e2e
+```
 
 ## Documentation
 

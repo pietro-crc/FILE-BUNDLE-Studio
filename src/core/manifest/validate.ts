@@ -465,8 +465,8 @@ export function validateManifestV1(value: unknown): ManifestValidationResult {
   if (securitySummary.mode !== settings.secretHandling) add(errors, 'security-mode-consistency', '/security/mode', 'La modalità sicurezza deve corrispondere alle impostazioni.')
   const secretPolicy = requireRecord(securitySummary.policy, '/security/policy', errors)
   ;(['maxCharactersPerFile', 'maxFindingsPerFile', 'maxCandidateLength', 'minHighEntropyLength'] as const).forEach((key) => {
-    const value = requireInteger(secretPolicy[key], `/security/policy/${key}`, errors)
-    if (value > SECRET_SCAN_POLICY_MAXIMUMS[key]) add(errors, 'security-policy-maximum', `/security/policy/${key}`, `Valore oltre il limite massimo di ${SECRET_SCAN_POLICY_MAXIMUMS[key]}.`)
+    const policyValue = requireInteger(secretPolicy[key], `/security/policy/${key}`, errors)
+    if (policyValue > SECRET_SCAN_POLICY_MAXIMUMS[key]) add(errors, 'security-policy-maximum', `/security/policy/${key}`, `Valore oltre il limite massimo di ${SECRET_SCAN_POLICY_MAXIMUMS[key]}.`)
   })
   if (typeof secretPolicy.highEntropyThreshold !== 'number' || !Number.isFinite(secretPolicy.highEntropyThreshold) || secretPolicy.highEntropyThreshold < 1 || secretPolicy.highEntropyThreshold > 8) add(errors, 'security-entropy-threshold', '/security/policy/highEntropyThreshold', 'Soglia entropia non valida.')
   if (typeof secretPolicy.scanHighEntropy !== 'boolean') add(errors, 'security-high-entropy', '/security/policy/scanHighEntropy', 'È richiesto un booleano.')

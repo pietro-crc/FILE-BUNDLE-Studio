@@ -19,7 +19,7 @@ export async function safeDynamicImport<T>(importFn: () => Promise<T>, retries =
     if (isFetchError) {
       throw new Error(
         'Impossibile caricare il modulo dinamico dell\'applicazione. Ciò accade solitamente quando viene pubblicata una nuova versione o la connessione viene interrotta. Ricarica la pagina per risolvere.',
-        { cause: error instanceof Error ? error : undefined },
+        { cause: error },
       )
     }
 
