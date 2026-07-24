@@ -26,7 +26,9 @@ jobs:
         with:
           node-version: '22.16.0'
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
+        env:
+          npm_config_registry: https://registry.npmjs.org
       - run: npm run build
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/

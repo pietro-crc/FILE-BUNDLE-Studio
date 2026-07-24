@@ -18,7 +18,9 @@ jobs:
         with:
           node-version: '22.16.0'
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
+        env:
+          npm_config_registry: https://registry.npmjs.org
       - run: npx playwright install --with-deps chromium
       - run: npm run quality
       - run: npm test
