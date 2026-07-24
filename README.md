@@ -8,7 +8,7 @@ It inspects the selected content locally and builds a consistent representation 
 - semantic Markdown;
 - a machine-readable JSON manifest.
 
-The application is designed for developers, analysts, and knowledge workers who need to share project context with an AI assistant without uploading the original archive to an intermediate service.
+Some AI assistants limit a conversation to three or four file attachments. AI Bundle Studio converts an entire folder or repository into three coordinated files—a visual PDF, semantic Markdown, and JSON manifest—so you can share the complete project with your preferred AI assistant.
 
 ## Why it exists
 
