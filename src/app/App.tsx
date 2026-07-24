@@ -10,7 +10,6 @@ import { ErrorBoundary } from '../ui/ErrorBoundary'
 import { Button } from '../ui/Button'
 import { LegalFooter } from '../ui/LegalFooter'
 import { LegalModal, type LegalTab } from '../ui/LegalModal'
-import { Analytics } from '../ui/Analytics'
 import './app.css'
 
 export function App() {
@@ -152,8 +151,6 @@ export function App() {
         isOpen={isLegalOpen}
         onClose={() => setIsLegalOpen(false)}
       />
-
-      <Analytics />
     </div>
   )
 }
