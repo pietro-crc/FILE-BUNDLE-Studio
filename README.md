@@ -4,7 +4,7 @@ AI Bundle Studio is a privacy-first, browser-based application for turning local
 
 ## Live demo
 
-Use the published application here: **[https://pietro-crc.github.io/FILE-BUNDLE-Studio/](https://pietro-crc.github.io/FILE-BUNDLE-Studio/)**
+Use the published application here: **[https://pietro-crc.github.io/FILE-BUNDLE-Studio/](https://ai-bundle-studio.pcdev.workers.dev/)**
 
 It inspects the selected content locally and builds a consistent representation across:
 
