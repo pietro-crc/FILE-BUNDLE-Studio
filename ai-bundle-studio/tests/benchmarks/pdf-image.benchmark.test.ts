@@ -58,7 +58,15 @@ test('records a local PDF and image assembly baseline', async () => {
   const markdown: MarkdownArtifact = {
     mediaType: 'text/markdown', generatedAt: GENERATED_AT, projectName: 'visual-benchmark',
     policy: { maxBytesPerFile: 1024, maxCharactersPerFile: 1024, maxPartBytes: 4096, includeLineNumbers: false, language: 'it' },
-    parts: [], records: [], spreadsheetWorkbooks: [], pdfDocuments: [pdfAsset], imageAssets, officeAssets: [], spreadsheetPreview: null, officePreview: null,
+    parts: [], records: [], spreadsheetWorkbooks: [], pdfDocuments: [pdfAsset], imageAssets, officeAssets: [],
+    securityReports: [],
+    securitySummary: {
+      mode: 'redact',
+      policy: { maxCharactersPerFile: 1024, maxFindingsPerFile: 10, maxCandidateLength: 100, minHighEntropyLength: 20, highEntropyThreshold: 4.5, scanHighEntropy: false },
+      scannedFileCount: 0, flaggedFileCount: 0, findingCount: 0, redactionCount: 0, excludedFileCount: 0, visualOmittedFileCount: 0, truncatedScanCount: 0, failedScanCount: 0,
+      categoryCounts: { 'sensitive-filename': 0, 'private-key': 0, 'cloud-credential': 0, 'access-token': 0, jwt: 0, 'connection-string': 0, 'password-assignment': 0, 'high-entropy': 0 },
+    },
+    spreadsheetPreview: null, officePreview: null,
     totalBytes: 0, sharded: false, validation: { valid: true, errors: [] },
   }
   const draft = await renderDocumentsPdf(manifest, markdown, { maxOutputPages: 100 })

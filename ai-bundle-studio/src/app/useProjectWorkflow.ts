@@ -21,7 +21,7 @@ export function useProjectWorkflow() {
   const [markdownSnapshot, setMarkdownSnapshot] = useState<MarkdownArtifactSnapshot | null>(null)
   const [progress, setProgress] = useState<MarkdownGenerationProgress | null>(null)
   const [phase, setPhase] = useState<ProcessingPhase>('parsing')
-  const [statusMessage, setStatusMessage] = useState('Pronto per acquisire file locali.')
+  const [statusMessage, setStatusMessage] = useState('Ready to acquire local files.')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const abortController = useRef<AbortController | null>(null)
 
@@ -34,7 +34,7 @@ export function useProjectWorkflow() {
 
   const resetAll = useCallback(() => {
     if (abortController.current) {
-      abortController.current.abort('Reset applicazione')
+      abortController.current.abort('Application reset')
       abortController.current = null
     }
     fileSystem.current?.dispose()
@@ -47,7 +47,7 @@ export function useProjectWorkflow() {
     setProgress(null)
     setPhase('parsing')
     setErrorMessage(null)
-    setStatusMessage('Pronto per acquisire file locali.')
+    setStatusMessage('Ready to acquire local files.')
     setState('idle')
   }, [])
 
@@ -61,22 +61,22 @@ export function useProjectWorkflow() {
     projectBundle.current = null
     setMarkdownSnapshot(null)
     setErrorMessage(null)
-    setStatusMessage(`${sourceLabel}: ${snapshot.fileCount} file acquisiti.`)
+    setStatusMessage(`${sourceLabel}: ${snapshot.fileCount} files acquired.`)
     setState('file-selected')
   }, [])
 
   const cancelProcessing = useCallback(() => {
     if (abortController.current) {
-      abortController.current.abort('Richiesta utente')
+      abortController.current.abort('User request')
       abortController.current = null
     }
-    setStatusMessage('Elaborazione annullata dall’utente.')
+    setStatusMessage('Processing cancelled by user.')
     setState('file-selected')
   }, [])
 
   const startProcessing = useCallback(async () => {
     if (!fileSystem.current) {
-      setErrorMessage('Nessun progetto selezionato.')
+      setErrorMessage('No project selected.')
       setState('error')
       return
     }
@@ -86,7 +86,7 @@ export function useProjectWorkflow() {
     setState('processing')
     setPhase('parsing')
     setErrorMessage(null)
-    setStatusMessage('Analisi preflight e indicizzazione in corso…')
+    setStatusMessage('Preflight analysis and indexing in progress…')
 
     try {
       // Step 1: Preflight analysis if not already run
@@ -109,7 +109,7 @@ export function useProjectWorkflow() {
           {
             projectName: importSnapshot?.root.name || 'project',
             outputMode: currentReport.recommendation.mode,
-            secretHandling: 'report-only',
+            secretHandling: 'redact',
           },
         )
         setManifestArtifact(currentManifest)
@@ -117,7 +117,7 @@ export function useProjectWorkflow() {
 
       // Step 3: Bundle & Markdown generation
       setPhase('processing')
-      setStatusMessage('Estrazione contenuti, PDF e Markdown in corso…')
+      setStatusMessage('Extracting content, PDF, and Markdown…')
 
       const bundle = await generateProjectBundle(fileSystem.current, currentManifest, {
         signal: controller.signal,
@@ -127,10 +127,10 @@ export function useProjectWorkflow() {
             const ratio = p.completed / p.total
             if (ratio > 0.8) {
               setPhase('recombining')
-              setStatusMessage('Assemblaggio e validazione output finale…')
+              setStatusMessage('Assembling and validating final output…')
             } else {
               setPhase('processing')
-              setStatusMessage(`Elaborazione file: ${p.completed} / ${p.total}`)
+              setStatusMessage(`Processing files: ${p.completed} / ${p.total}`)
             }
           }
         },
@@ -141,16 +141,16 @@ export function useProjectWorkflow() {
       setMarkdownSnapshot(snapshot)
       setManifestArtifact(bundle.manifest)
       setPhase('completed')
-      setStatusMessage('Elaborazione completata con successo!')
+      setStatusMessage('Processing completed successfully!')
       setState('completed')
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
-        setStatusMessage('Elaborazione annullata.')
+        setStatusMessage('Processing cancelled.')
         setState('file-selected')
       } else {
-        const msg = error instanceof Error ? error.message : 'Errore imprevisto durante l’elaborazione.'
+        const msg = error instanceof Error ? error.message : 'Unexpected error during processing.'
         setErrorMessage(msg)
-        setStatusMessage(`Errore: ${msg}`)
+        setStatusMessage(`Error: ${msg}`)
         setState('error')
       }
     } finally {

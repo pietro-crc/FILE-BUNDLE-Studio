@@ -46,13 +46,13 @@ describe('Modern UI/UX Application Shell & Workflow', () => {
       const user = userEvent.setup()
       render(<App />)
 
-      const input = screen.getByLabelText('Seleziona più file')
+      const input = screen.getByLabelText('Select multiple files')
       await user.upload(input, [
         new File(['# Hello AI'], 'README.md', { type: 'text/markdown' }),
         new File(['{"app": "test"}'], 'config.json', { type: 'application/json' }),
       ])
 
-      expect(screen.getByText('Progetto Acquisito')).toBeInTheDocument()
+      expect(screen.getByText('Project Acquired')).toBeInTheDocument()
       const startButton = screen.getByRole('button', { name: 'Start processing' })
       expect(startButton).toBeEnabled()
 
@@ -63,7 +63,7 @@ describe('Modern UI/UX Application Shell & Workflow', () => {
         await screen.findByText(/PROCESSING COMPLETE/i, {}, { timeout: 10000 }),
       ).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /Download Package \(\.ZIP\)/i })).toBeInTheDocument()
-      expect(screen.getByText('Markdown (.md)')).toBeInTheDocument()
+      expect(screen.getByText('.MD')).toBeInTheDocument()
     },
     15000,
   )
@@ -79,7 +79,7 @@ describe('Modern UI/UX Application Shell & Workflow', () => {
         type: 'application/zip',
       })
 
-      await user.upload(screen.getByLabelText('Seleziona archivio ZIP'), zipFile)
+      await user.upload(screen.getByLabelText('Select ZIP archive'), zipFile)
 
       const startButton = screen.getByRole('button', { name: 'Start processing' })
       expect(startButton).toBeEnabled()
@@ -88,7 +88,7 @@ describe('Modern UI/UX Application Shell & Workflow', () => {
       expect(
         await screen.findByText(/PROCESSING COMPLETE/i, {}, { timeout: 10000 }),
       ).toBeInTheDocument()
-      expect(screen.getByText('Markdown (.md)')).toBeInTheDocument()
+      expect(screen.getByText('.MD')).toBeInTheDocument()
     },
     15000,
   )
@@ -104,7 +104,7 @@ describe('Modern UI/UX Application Shell & Workflow', () => {
       copy.set(bytes)
 
       await user.upload(
-        screen.getByLabelText('Seleziona più file'),
+        screen.getByLabelText('Select multiple files'),
         new File([copy.buffer], 'finance.xlsx', {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         }),

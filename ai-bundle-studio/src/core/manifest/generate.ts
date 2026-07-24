@@ -281,6 +281,7 @@ export async function createManifestV1(
     .sort((left, right) => left.normalizedPath.localeCompare(right.normalizedPath, undefined, { numeric: true }))
     .map((directory) => buildDirectoryRecord(directory, directoryIds, fileIds))
   const outputMode = options.outputMode ?? report.recommendation.mode
+  const secretHandling = options.secretHandling ?? 'redact'
   const manifest: ManifestV1 = {
     schemaVersion: MANIFEST_SCHEMA_VERSION,
     mediaType: MANIFEST_MEDIA_TYPE,
@@ -314,7 +315,7 @@ export async function createManifestV1(
       language: options.language ?? 'it',
       includeExtractedText: true,
       nestedArchiveDepth: 0,
-      secretHandling: options.secretHandling ?? 'report-only',
+      secretHandling,
     },
     preflight: {
       status: 'complete',
@@ -329,7 +330,7 @@ export async function createManifestV1(
     },
     summary: buildSummary(files, fileSystem, report),
     security: {
-      mode: options.secretHandling ?? 'report-only',
+      mode: secretHandling,
       policy: DEFAULT_SECRET_SCAN_POLICY,
       scannedFileCount: 0,
       flaggedFileCount: 0,

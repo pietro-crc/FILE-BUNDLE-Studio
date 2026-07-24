@@ -116,7 +116,7 @@ describe('PPTX production fallback', () => {
     expect(parsed.getPageCount()).toBe(bundle.documents.pageCount)
     const limited = await generateProjectBundle(result.fileSystem, manifest, { generatedAt: GENERATED_AT, officePolicy: { maxPreviewPages: 1 }, documentsPolicy: { maxOutputPages: 50 } })
     expect(limited.markdown.officePreview?.pageCount).toBe(1)
-    expect(limited.markdown.officePreview?.warnings.join(' ')).toMatch(/troncata|non sono stati rappresentati/u)
+    expect(limited.markdown.officePreview?.warnings.join(' ')).toMatch(/troncata|truncated|non sono stati rappresentati|not represented/u)
     result.fileSystem.dispose()
   }, 20_000)
 })

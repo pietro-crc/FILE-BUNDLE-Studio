@@ -130,8 +130,9 @@ describe('secret scanner and redaction', () => {
     expect(file).toBeDefined()
     const mutated = structuredClone(bundle.manifest.manifest)
     if (mutated.files[0]) {
-      mutated.files[0].security.visualOmitted = true
-      mutated.files[0].representations.pdf = { status: 'completed', pages: [1], parts: ['project-documents.pdf'] }
+      const targetFile = mutated.files[0] as any
+      targetFile.security.visualOmitted = true
+      targetFile.representations.pdf = { status: 'completed', pages: [1], parts: ['project-documents.pdf'] }
     }
     const { validateManifestV1 } = await import('../../src/core/manifest/validate')
     const validation = validateManifestV1(mutated)

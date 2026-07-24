@@ -148,14 +148,14 @@ export function SourceDropzone({ isBusy, onImport, onError }: SourceDropzoneProp
 
       <input
         accept=".zip,application/zip,application/x-zip-compressed"
-        aria-label="Seleziona archivio ZIP"
+        aria-label="Select ZIP archive"
         className="visually-hidden"
         onChange={(event) => void handleZipSelection(event)}
         ref={zipInput}
         type="file"
       />
       <input
-        aria-label="Seleziona più file"
+        aria-label="Select multiple files"
         className="visually-hidden"
         multiple
         onChange={(event) => void handleFileSelection(event)}
@@ -163,7 +163,7 @@ export function SourceDropzone({ isBusy, onImport, onError }: SourceDropzoneProp
         type="file"
       />
       <input
-        aria-label="Seleziona cartella locale"
+        aria-label="Select local folder"
         className="visually-hidden"
         multiple
         onChange={(event) => void handleDirectorySelection(event)}

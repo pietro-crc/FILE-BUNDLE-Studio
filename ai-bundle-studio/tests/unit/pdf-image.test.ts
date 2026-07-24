@@ -41,6 +41,13 @@ function emptyMarkdown(overrides: Partial<MarkdownArtifact>): MarkdownArtifact {
     pdfDocuments: [],
     imageAssets: [],
     officeAssets: [],
+    securityReports: [],
+    securitySummary: {
+      mode: 'redact',
+      policy: { maxCharactersPerFile: 1024, maxFindingsPerFile: 10, maxCandidateLength: 100, minHighEntropyLength: 20, highEntropyThreshold: 4.5, scanHighEntropy: false },
+      scannedFileCount: 0, flaggedFileCount: 0, findingCount: 0, redactionCount: 0, excludedFileCount: 0, visualOmittedFileCount: 0, truncatedScanCount: 0, failedScanCount: 0,
+      categoryCounts: { 'sensitive-filename': 0, 'private-key': 0, 'cloud-credential': 0, 'access-token': 0, jwt: 0, 'connection-string': 0, 'password-assignment': 0, 'high-entropy': 0 },
+    },
     spreadsheetPreview: null,
     officePreview: null,
     totalBytes: 0,
@@ -64,7 +71,7 @@ describe('image metadata and defensive limits', () => {
     if (!file || !manifestFile) throw new Error('Fixture image missing.')
     const decoder = vi.fn(async () => createPngFixture())
 
-    await expect(extractImageFile(file, manifestFile, { maxMegapixels: 40 }, undefined, decoder)).rejects.toThrow(/oltre il limite/u)
+    await expect(extractImageFile(file, manifestFile, { maxMegapixels: 40 }, undefined, decoder)).rejects.toThrow(/oltre il limite|above the.*limit/u)
     expect(decoder).not.toHaveBeenCalled()
     fileSystem.dispose()
   })
@@ -117,7 +124,7 @@ describe('documents PDF page mapping and limits', () => {
     const validation = validateDocumentsArtifact(draft, updated)
     expect(validation).toEqual({ valid: true, errors: [] })
     expect(draft.pageCount).toBe(8)
-    expect(draft.warnings).toContain('Output limitato a 8 pagine; alcuni file o pagine non sono rappresentati.')
+    expect(draft.warnings.some((w) => /Output (limitato|limited) to 8|Output limitato a 8/i.test(w))).toBe(true)
     const record = draft.records[0]
     expect(record).toMatchObject({ status: 'partial', sourcePages: [{ sourcePage: 1, outputPage: 5 }, { sourcePage: 2, outputPage: 6 }, { sourcePage: 3, outputPage: 7 }] })
     const importedPages = draft.pages.filter((page) => page.kind === 'pdf-original')

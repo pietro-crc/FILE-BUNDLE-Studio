@@ -489,7 +489,7 @@ exports[`manifest v1 > keeps the JSON schema and the generated golden artifact v
     "failedScanCount": 0,
     "findingCount": 0,
     "flaggedFileCount": 0,
-    "mode": "report-only",
+    "mode": "redact",
     "policy": {
       "highEntropyThreshold": 4.2,
       "maxCandidateLength": 512,
@@ -511,7 +511,7 @@ exports[`manifest v1 > keeps the JSON schema and the generated golden artifact v
     "language": "it",
     "nestedArchiveDepth": 0,
     "outputMode": "quick-preview",
-    "secretHandling": "report-only"
+    "secretHandling": "redact"
   },
   "sharding": {
     "applied": false,

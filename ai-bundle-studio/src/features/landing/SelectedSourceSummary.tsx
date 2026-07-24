@@ -8,10 +8,10 @@ interface SelectedSourceSummaryProps {
 }
 
 const SOURCE_LABELS: Record<ImportSessionSnapshot['source'], string> = {
-  'file-picker': 'File multipli',
-  'directory-picker': 'Cartella locale',
-  'drag-drop': 'Trascinamento',
-  zip: 'Archivio ZIP',
+  'file-picker': 'Multiple files',
+  'directory-picker': 'Local folder',
+  'drag-drop': 'Drag & Drop',
+  zip: 'ZIP Archive',
 }
 
 function formatBytes(bytes: number): string {
@@ -23,7 +23,7 @@ function formatBytes(bytes: number): string {
     value /= 1024
     unitIndex += 1
   } while (value >= 1024 && unitIndex < units.length - 1)
-  return `${value.toLocaleString('it-IT', { maximumFractionDigits: value >= 10 ? 1 : 2 })} ${units[unitIndex]}`
+  return `${value.toLocaleString('en-US', { maximumFractionDigits: value >= 10 ? 1 : 2 })} ${units[unitIndex]}`
 }
 
 export function SelectedSourceSummary({ snapshot, onClear }: SelectedSourceSummaryProps) {
@@ -39,38 +39,38 @@ export function SelectedSourceSummary({ snapshot, onClear }: SelectedSourceSumma
   }
 
   return (
-    <div className="selected-source-summary" aria-label="Riepilogo del progetto selezionato">
+    <div className="selected-source-summary" aria-label="Selected project summary">
       <div className="selected-source-summary__header">
         <div className="selected-source-summary__title-wrap">
           <div className="selected-source-summary__icon" aria-hidden="true">
             {getIcon()}
           </div>
           <div>
-            <span className="eyebrow">Progetto Acquisito</span>
+            <span className="eyebrow">Project Acquired</span>
             <h3 className="selected-source-summary__title">{SOURCE_LABELS[snapshot.source]}</h3>
           </div>
         </div>
 
         <Button onClick={onClear} variant="ghost">
-          Rimuovi o Sostituisci
+          Remove or Replace
         </Button>
       </div>
 
       <div className="selected-source-summary__metrics">
         <div className="metric-box">
-          <span className="metric-box__label">File validi</span>
+          <span className="metric-box__label">Valid files</span>
           <strong className="metric-box__value">{snapshot.fileCount}</strong>
         </div>
         <div className="metric-box">
-          <span className="metric-box__label">Cartelle</span>
+          <span className="metric-box__label">Folders</span>
           <strong className="metric-box__value">{snapshot.directoryCount}</strong>
         </div>
         <div className="metric-box">
-          <span className="metric-box__label">Dimensione logica</span>
+          <span className="metric-box__label">Logical size</span>
           <strong className="metric-box__value">{formatBytes(snapshot.totalBytes)}</strong>
         </div>
         <div className="metric-box">
-          <span className="metric-box__label">Segnalazioni</span>
+          <span className="metric-box__label">Issues</span>
           <strong className={`metric-box__value ${snapshot.issues.length > 0 ? 'metric-box__value--warning' : ''}`}>
             {snapshot.issues.length}
           </strong>
@@ -79,7 +79,7 @@ export function SelectedSourceSummary({ snapshot, onClear }: SelectedSourceSumma
 
       {snapshot.issues.length > 0 ? (
         <details className="selected-source-summary__issues">
-          <summary>{snapshot.issues.length} avvisi di acquisizione rilevati (clicca per espandere)</summary>
+          <summary>{snapshot.issues.length} acquisition warnings detected (click to expand)</summary>
           <ul>
             {snapshot.issues.slice(0, 10).map((issue, index) => (
               <li key={`${issue.code}-${issue.path ?? index}`}>
