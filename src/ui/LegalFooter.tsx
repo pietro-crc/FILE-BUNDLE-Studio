@@ -6,7 +6,7 @@ interface LegalFooterProps {
 
 export function LegalFooter({ onOpenLegal }: LegalFooterProps) {
   return (
-    <footer className="app-footer-legal" role="contentinfo" aria-label="Legal & compliance footer">
+    <footer className="app-footer-legal" role="contentinfo" aria-label="Product and legal footer">
       <div className="legal-footer__inner">
         <div className="legal-footer__copy">
           <span>© {new Date().getFullYear()} AI Bundle Studio</span>
@@ -14,14 +14,14 @@ export function LegalFooter({ onOpenLegal }: LegalFooterProps) {
           <span>100% In-Browser Local Processing</span>
         </div>
 
-        <div className="legal-footer__links">
-          <button
-            className="legal-footer-link"
-            onClick={() => onOpenLegal('privacy')}
-            type="button"
-          >
-            Privacy Policy
-          </button>
+        <nav className="legal-footer__links" aria-label="Product and legal links">
+          <a className="legal-footer-link" href="/how-it-works/">How it works</a>
+          <span className="dot-separator">•</span>
+          <a className="legal-footer-link" href="/convert-zip-for-ai/">ZIP to AI</a>
+          <span className="dot-separator">•</span>
+          <a className="legal-footer-link" href="/combine-multiple-files-for-ai/">AI file-limit guide</a>
+          <span className="dot-separator">•</span>
+          <a className="legal-footer-link" href="/privacy/">Privacy</a>
           <span className="dot-separator">•</span>
           <button
             className="legal-footer-link"
@@ -30,7 +30,7 @@ export function LegalFooter({ onOpenLegal }: LegalFooterProps) {
           >
             Terms of Service
           </button>
-        </div>
+        </nav>
       </div>
     </footer>
   )

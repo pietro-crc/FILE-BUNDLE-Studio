@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Combine Multiple Files for AI Upload Limits | AI Bundle Studio</title>
+    <meta name="description" content="Package many project files into three coordinated AI-ready attachments: Markdown, PDF, and JSON, processed locally in your browser." />
+    <link rel="canonical" href="https://ai-bundle-studio.pcdev.workers.dev/combine-multiple-files-for-ai/" />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/seo-pages.css" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#09090b" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://ai-bundle-studio.pcdev.workers.dev/combine-multiple-files-for-ai/" />
+    <meta property="og:title" content="Fit many project files into a 3-file AI upload limit" />
+    <meta property="og:description" content="Create Markdown, PDF, and JSON attachments from a folder, ZIP, or multiple files." />
+    <meta property="og:image" content="https://ai-bundle-studio.pcdev.workers.dev/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to combine multiple files for AI upload limits",
+        "description": "A practical guide to representing a multi-file project in three coordinated AI-ready attachments.",
+        "mainEntityOfPage": "https://ai-bundle-studio.pcdev.workers.dev/combine-multiple-files-for-ai/",
+        "image": "https://ai-bundle-studio.pcdev.workers.dev/og.png",
+        "author": { "@type": "Organization", "name": "AI Bundle Studio" },
+        "publisher": { "@type": "Organization", "name": "AI Bundle Studio" },
+        "dateModified": "2026-07-25"
+      }
+    </script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>AI</span> Bundle Studio</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/how-it-works/">How it works</a>
+        <a href="/convert-zip-for-ai/">ZIP to AI</a>
+        <a href="/privacy/">Privacy</a>
+        <a class="site-nav__cta" href="/">Open converter</a>
+      </nav>
+    </header>
+    <main class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><span>AI file-limit guide</span></nav>
+      <p class="eyebrow">Multiple files → 3 attachments</p>
+      <h1>Give an AI the whole project, not three arbitrary files.</h1>
+      <p class="lead">When an AI assistant restricts the number of uploaded files, choosing only a few source documents removes context. AI Bundle Studio represents the complete selection through three complementary formats instead.</p>
+      <div class="hero-actions"><a class="button" href="/">Bundle multiple files</a><a class="button button--secondary" href="#strategy">Understand the strategy</a></div>
+
+      <div class="content-grid">
+        <article class="article">
+          <section id="strategy">
+            <h2>The problem with file-count limits</h2>
+            <p>A software project, research folder, client archive, or documentation set can contain dozens or thousands of related files. If an AI interface accepts only a small number of attachments, uploading files one at a time forces you to decide which context to omit before the analysis has even started.</p>
+            <p>Simply concatenating everything into one enormous text document is also fragile. File boundaries become unclear, binary or structured data loses meaning, and the result is difficult for a person to inspect. A coordinated bundle preserves different kinds of context without exceeding a three-file limit.</p>
+          </section>
+
+          <section>
+            <h2>How the three-file strategy works</h2>
+            <div class="format-grid">
+              <div class="format-card"><code>PROJECT.MD</code><p>The main readable context. It presents extracted content with paths and organization that a language model can follow.</p></div>
+              <div class="format-card"><code>PROJECT.PDF</code><p>A stable document view for inspection, sharing, and AI products that work especially well with PDF attachments.</p></div>
+              <div class="format-card"><code>MANIFEST.JSON</code><p>A machine-readable inventory describing hierarchy, metadata, processing status, and relationships between source items.</p></div>
+            </div>
+            <p>Attach all three files and tell the AI they describe the same source project. Ask it to use Markdown for primary context, JSON to verify structure, and PDF as a portable reference.</p>
+          </section>
+
+          <section>
+            <h2>A practical prompt to use with the bundle</h2>
+            <div class="callout"><p>“These three attachments represent one project. Use the Markdown as the primary readable context, the JSON manifest to understand file structure and metadata, and the PDF as a supporting document view. First summarize the project and identify any missing or unreadable areas before completing my request.”</p></div>
+            <p>This instruction prevents the AI from treating the outputs as three unrelated documents. It also encourages the model to report gaps rather than assuming that every original file was fully represented.</p>
+          </section>
+
+          <section>
+            <h2>Prepare the source before bundling</h2>
+            <ul>
+              <li><strong>Remove dependencies and generated output.</strong> Folders such as package caches, compiled builds, and temporary exports add volume without useful project context.</li>
+              <li><strong>Exclude secrets.</strong> Remove environment files, tokens, passwords, certificates, private keys, and production credentials.</li>
+              <li><strong>Keep meaningful filenames.</strong> Descriptive paths help the generated manifest and Markdown explain the project.</li>
+              <li><strong>Include a short project README.</strong> A human-written overview gives the AI stronger orientation than raw files alone.</li>
+              <li><strong>Review the outputs.</strong> Confirm that the generated bundle contains what you expect before uploading it to another service.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Limits still apply</h2>
+            <p>AI Bundle Studio reduces file count; it does not remove every size, token, or format restriction imposed by the destination AI product. Very large projects may still exceed context windows or attachment-size limits. For those cases, split the source into meaningful modules and create one three-file bundle per module.</p>
+          </section>
+        </article>
+
+        <aside><div class="aside-card"><h2>Three attachments</h2><p>One readable, one portable, one structured.</p><ul><li><strong>.md</strong> project context</li><li><strong>.pdf</strong> document view</li><li><strong>.json</strong> structure and metadata</li></ul><a class="button" href="/">Create the bundle</a></div></aside>
+      </div>
+    </main>
+    <footer class="site-footer"><span>© 2026 AI Bundle Studio</span><nav><a href="/how-it-works/">How it works</a><a href="/privacy/">Privacy</a></nav></footer>
+  </body>
+</html>

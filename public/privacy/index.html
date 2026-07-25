@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy and Local File Processing | AI Bundle Studio</title>
+    <meta name="description" content="Understand how AI Bundle Studio processes ZIPs, folders, and files locally in your browser and what limited site analytics may be collected." />
+    <link rel="canonical" href="https://ai-bundle-studio.pcdev.workers.dev/privacy/" />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/seo-pages.css" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#09090b" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://ai-bundle-studio.pcdev.workers.dev/privacy/" />
+    <meta property="og:title" content="Privacy and local processing in AI Bundle Studio" />
+    <meta property="og:description" content="Source files are processed in the browser rather than uploaded to a conversion server." />
+    <meta property="og:image" content="https://ai-bundle-studio.pcdev.workers.dev/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Privacy and Local File Processing",
+        "description": "How AI Bundle Studio handles source files and limited website analytics.",
+        "url": "https://ai-bundle-studio.pcdev.workers.dev/privacy/",
+        "dateModified": "2026-07-25",
+        "isPartOf": { "@type": "WebSite", "name": "AI Bundle Studio", "url": "https://ai-bundle-studio.pcdev.workers.dev/" }
+      }
+    </script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>AI</span> Bundle Studio</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/how-it-works/">How it works</a>
+        <a href="/convert-zip-for-ai/">ZIP to AI</a>
+        <a href="/combine-multiple-files-for-ai/">File-limit guide</a>
+        <a class="site-nav__cta" href="/">Open converter</a>
+      </nav>
+    </header>
+    <main class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><span>Privacy</span></nav>
+      <p class="eyebrow">Privacy by design</p>
+      <h1>Your source files stay in your browser.</h1>
+      <p class="lead">AI Bundle Studio is designed to convert selected files locally. The application does not require an account or send source-file contents to an AI Bundle Studio conversion server.</p>
+      <div class="hero-actions"><a class="button" href="/">Open the local converter</a><a class="button button--secondary" href="#details">Read the details</a></div>
+
+      <div class="content-grid">
+        <article class="article" id="details">
+          <section>
+            <h2>What local processing means</h2>
+            <p>When you select a ZIP, folder, or group of files, the browser grants the page access only to the items you chose. AI Bundle Studio reads those items through browser APIs, creates a temporary virtual file system in memory, and generates the Markdown, PDF, and JSON outputs on your device.</p>
+            <p>The source content is not submitted to a remote conversion API. Refreshing or closing the page ends the active session and clears the in-memory project state. Downloaded output files remain wherever you save them on your device.</p>
+          </section>
+
+          <section>
+            <h2>What the site may receive</h2>
+            <p>The web host necessarily receives ordinary network information required to deliver the site, such as an IP address, requested URL, timestamp, and browser request headers. The site also uses Cloudflare Web Analytics to understand aggregate performance and page usage.</p>
+            <p>Analytics may process limited technical information about page visits and device or browser characteristics. It is separate from the local conversion workspace and is not used to transmit the names or contents of the files you select.</p>
+          </section>
+
+          <section>
+            <h2>What AI Bundle Studio does not need</h2>
+            <ul>
+              <li>No user account is required for local conversion.</li>
+              <li>No source ZIP, folder, document, or code file is uploaded to an AI Bundle Studio conversion backend.</li>
+              <li>No API key or AI-provider credential is required.</li>
+              <li>No generated bundle is automatically sent to an AI assistant.</li>
+              <li>No active project is intentionally retained by the application after the page is closed or refreshed.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Your responsibilities</h2>
+            <p>Only process files you are authorized to use. Review the source for credentials, personal data, confidential client information, regulated data, and third-party material before conversion. Although processing is local, sensitive information can still appear in the generated outputs.</p>
+            <div class="callout"><p><strong>Uploading comes later:</strong> if you attach the generated files to an external AI service, that service's privacy policy, retention rules, and account settings apply. AI Bundle Studio does not control that later upload.</p></div>
+          </section>
+
+          <section>
+            <h2>Security boundaries</h2>
+            <p>Browser-only processing reduces data transfer, but it does not guarantee that every device, browser extension, downloaded file, or destination service is secure. Keep your browser updated, use a trusted device, inspect the generated outputs, and avoid processing secrets unless necessary.</p>
+          </section>
+
+          <section>
+            <h2>Changes to this page</h2>
+            <p>This privacy explanation may be updated when the product, hosting, or analytics configuration changes. The current version was updated on July 25, 2026.</p>
+          </section>
+        </article>
+
+        <aside><div class="aside-card"><h2>Privacy summary</h2><ul><li>Conversion runs locally</li><li>No account required</li><li>No automatic AI upload</li><li>Review outputs before sharing</li></ul><a class="button" href="/how-it-works/">See how it works</a></div></aside>
+      </div>
+    </main>
+    <footer class="site-footer"><span>© 2026 AI Bundle Studio</span><nav><a href="/">Converter</a><a href="/how-it-works/">How it works</a></nav></footer>
+  </body>
+</html>
