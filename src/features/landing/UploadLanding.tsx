@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import type { ImportSessionSnapshot } from '../../core/vfs/snapshot'
 import type { ImportResult } from '../../core/vfs/types'
 import { Button } from '../../ui/Button'
@@ -26,12 +25,6 @@ export function UploadLanding({
   onError,
 }: UploadLandingProps) {
   const hasProject = Boolean(snapshot && snapshot.fileCount > 0)
-
-  useEffect(() => {
-    if (!hasProject) {
-      document.title = 'Convert ZIP and Multiple Files into 3 AI-Ready Files · AI Bundle Studio'
-    }
-  }, [hasProject])
 
   return (
     <div className="upload-landing studio-landing" data-screen-heading>

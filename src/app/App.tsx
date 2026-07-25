@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useProjectWorkflow } from './useProjectWorkflow'
 import { UploadLanding } from '../features/landing/UploadLanding'
 import { ProcessingView } from '../features/processing/ProcessingView'
-import { ResultsDashboard } from '../features/results/ResultsDashboard'
 import { Brand } from '../ui/Brand'
 import { PrivacyStatus } from '../ui/PrivacyStatus'
 import { ThemeSwitcher } from '../ui/ThemeSwitcher'
@@ -11,6 +10,19 @@ import { Button } from '../ui/Button'
 import { LegalFooter } from '../ui/LegalFooter'
 import { LegalModal, type LegalTab } from '../ui/LegalModal'
 import './app.css'
+
+const ResultsDashboard = lazy(() =>
+  import('../features/results/ResultsDashboard').then(({ ResultsDashboard: Component }) => ({
+    default: Component,
+  })),
+)
+
+const PAGE_TITLES = {
+  idle: 'Convert ZIP & Multiple Files into 3 AI-Ready Files | AI Bundle Studio',
+  processing: 'Processing project | AI Bundle Studio',
+  completed: 'Your 3 AI-Ready Files | AI Bundle Studio',
+  selection: 'Project selected | AI Bundle Studio',
+} as const
 
 export function App() {
   const workflow = useProjectWorkflow()
@@ -24,15 +36,14 @@ export function App() {
   }
 
   useEffect(() => {
-    document.title = `AI Bundle Studio · ${
+    document.title =
       workflow.state === 'idle'
-        ? 'Browser-Only Ingestion'
+        ? PAGE_TITLES.idle
         : workflow.state === 'processing'
-        ? 'Processing in progress'
-        : workflow.state === 'completed'
-        ? 'Results'
-        : 'Project Selection'
-    }`
+          ? PAGE_TITLES.processing
+          : workflow.state === 'completed'
+            ? PAGE_TITLES.completed
+            : PAGE_TITLES.selection
 
     if (previousState.current !== workflow.state) {
       window.scrollTo({ left: 0, top: 0, behavior: 'auto' })
@@ -71,12 +82,20 @@ export function App() {
 
       case 'completed':
         return (
-          <ResultsDashboard
-            manifestArtifact={workflow.manifestArtifact}
-            markdownSnapshot={workflow.markdownSnapshot}
-            onNewProject={workflow.resetAll}
-            projectBundle={workflow.projectBundle}
-          />
+          <Suspense
+            fallback={
+              <div className="screen screen-loading" role="status">
+                Loading your three AI-ready files…
+              </div>
+            }
+          >
+            <ResultsDashboard
+              manifestArtifact={workflow.manifestArtifact}
+              markdownSnapshot={workflow.markdownSnapshot}
+              onNewProject={workflow.resetAll}
+              projectBundle={workflow.projectBundle}
+            />
+          </Suspense>
         )
 
       case 'error': {
