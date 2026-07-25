@@ -12,7 +12,7 @@ export function AiGuidePanel({ onOpenOutputs }: AiGuidePanelProps) {
         <div className="ai-guide-panel__title-group">
           <span className="ai-guide-panel__tag">HOW TO USE YOUR BUNDLE WITH AI</span>
           <h2 id="ai-guide-title" className="ai-guide-panel__title">
-            3 simple steps to feed your project to any AI Assistant
+            Attach your whole project in 3 files
           </h2>
         </div>
 
@@ -28,7 +28,7 @@ export function AiGuidePanel({ onOpenOutputs }: AiGuidePanelProps) {
             <div className="step-content">
               <strong>Download your bundle</strong>
               <p>
-                Download the <code>.ZIP</code> package or open the output explorer for individual files.
+                Download the <code>.ZIP</code> package or open the output explorer for the three individual files.
               </p>
             </div>
           </div>
@@ -36,9 +36,9 @@ export function AiGuidePanel({ onOpenOutputs }: AiGuidePanelProps) {
           <div className="guide-step">
             <span className="step-num">2</span>
             <div className="step-content">
-              <strong>Extract or Prepare Files</strong>
+              <strong>Extract or prepare files</strong>
               <p>
-                If you downloaded the <code>.ZIP</code> package, unzip it to get the folder containing the 3 files (<code>.md</code>, <code>.pdf</code>, <code>.json</code>).
+                If you downloaded the <code>.ZIP</code> package, unzip it to get the three files (<code>.md</code>, <code>.pdf</code>, <code>.json</code>).
               </p>
             </div>
           </div>
@@ -48,7 +48,7 @@ export function AiGuidePanel({ onOpenOutputs }: AiGuidePanelProps) {
             <div className="step-content">
               <strong>Attach to your AI Assistant</strong>
               <p>
-                Open your preferred AI Assistant and drag & drop or attach all 3 generated files into the chat box.
+                Open your preferred AI Assistant and attach all 3 files to the chat. This keeps a complete project within a 3-file limit.
               </p>
             </div>
           </div>
