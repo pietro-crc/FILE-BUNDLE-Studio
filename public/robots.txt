@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-bundle-studio.pcdev.workers.dev/sitemap.xml

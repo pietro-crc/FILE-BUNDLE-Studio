@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import type { ImportSessionSnapshot } from '../../core/vfs/snapshot'
 import type { ImportResult } from '../../core/vfs/types'
 import { Button } from '../../ui/Button'
 import { SelectedSourceSummary } from './SelectedSourceSummary'
 import { SourceDropzone } from './SourceDropzone'
+import { OutputPromise } from './OutputPromise'
 
 interface UploadLandingProps {
   readonly snapshot: ImportSessionSnapshot | null
@@ -25,19 +27,31 @@ export function UploadLanding({
 }: UploadLandingProps) {
   const hasProject = Boolean(snapshot && snapshot.fileCount > 0)
 
+  useEffect(() => {
+    if (!hasProject) {
+      document.title = 'Convert ZIP and Multiple Files into 3 AI-Ready Files · AI Bundle Studio'
+    }
+  }, [hasProject])
+
   return (
     <div className="upload-landing studio-landing" data-screen-heading>
       <header className="studio-landing__header">
         <div className="studio-landing__meta">
-          <span className="studio-tag">CODE INGESTION STUDIO</span>
+          <span className="studio-tag">ZIP / FOLDER / MANY FILES → 3 AI-READY FILES</span>
         </div>
-        <h1 className="studio-landing__title" tabIndex={-1}>
-          Prepare your project for AI
+        <h1
+          aria-label="Prepare your project for AI: turn any project into 3 AI-ready files"
+          className="studio-landing__title"
+          tabIndex={-1}
+        >
+          Turn any project into 3 AI-ready files
         </h1>
         <p className="studio-landing__subtitle">
-          Extract, analyze, and synthesize code & documents into LLM-optimized bundles, Markdown, and PDF.
+          Upload multiple files, a folder, or a ZIP. Get Markdown, PDF, and JSON attachments ready for AI assistants that limit file uploads.
         </p>
       </header>
+
+      <OutputPromise />
 
       <div className="studio-workspace-card">
         <div className="studio-workspace-card__body">
@@ -56,12 +70,13 @@ export function UploadLanding({
 
           <div className="studio-actions">
             <Button
+              aria-label="Start processing"
               className="studio-btn-primary"
               disabled={!hasProject || isBusy}
               onClick={onStartProcessing}
               variant="primary"
             >
-              <span>Start processing</span>
+              <span>{hasProject ? 'Create 3 AI files' : 'Start processing'}</span>
               <span className="studio-btn-icon" aria-hidden="true">→</span>
             </Button>
           </div>
