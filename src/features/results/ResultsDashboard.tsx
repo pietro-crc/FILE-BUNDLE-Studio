@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { zipSync, strToU8 } from 'fflate'
 import type { MarkdownArtifactSnapshot } from '../../core/markdown/types'
 import type { ManifestArtifact } from '../../core/manifest/types'
 import type { ProjectBundle } from '../../core/output/types'
@@ -8,6 +7,7 @@ import { ArchiveIcon, FilesIcon } from '../../ui/icons'
 import { ArtifactExplorerModal } from './ArtifactExplorerModal'
 import { ValidationSummary } from './ValidationSummary'
 import { AiGuidePanel } from './AiGuidePanel'
+import { prepareMarkdownDownload, prepareProjectPackage, type PreparedDownload } from './downloads'
 
 interface ResultsDashboardProps {
   readonly manifestArtifact: ManifestArtifact | null
@@ -26,6 +26,18 @@ function downloadBlob(blob: Blob, filename: string): void {
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
+
+function downloadPreparedArtifact(download: PreparedDownload): void {
+  const copy = new Uint8Array(download.bytes.byteLength)
+  copy.set(download.bytes)
+  downloadBlob(new Blob([copy.buffer], { type: download.mediaType }), download.filename)
+}
+
+const SECRET_POLICY_LABELS = {
+  'report-only': 'Report only',
+  redact: 'Redacted',
+  exclude: 'Excluded',
+} as const
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
@@ -46,49 +58,62 @@ export function ResultsDashboard({
   onNewProject,
 }: ResultsDashboardProps) {
   const [isExplorerOpen, setIsExplorerOpen] = useState(false)
+  const [isPackaging, setIsPackaging] = useState(false)
+  const [packageError, setPackageError] = useState<string | null>(null)
   const projectName = manifestArtifact?.manifest.projectName || 'project'
   const includedCount = manifestArtifact?.manifest.summary.includedFileCount ?? 0
   const excludedCount = manifestArtifact?.manifest.summary.excludedFileCount ?? 0
   const totalAcquired = includedCount + excludedCount
+  const markdownPartCount = projectBundle?.markdown.parts.length ?? 0
+  const secretPolicy = manifestArtifact?.manifest.settings.secretHandling ?? 'redact'
+  const totalOutputBytes =
+    (projectBundle?.markdown.totalBytes ?? markdownSnapshot?.totalBytes ?? 0) +
+    (projectBundle?.documents.byteLength ?? 0) +
+    (manifestArtifact?.byteLength ?? 0)
 
   const handleDownloadPdf = () => {
     if (!projectBundle?.documents.bytes) return
-    const blob = new Blob([new Uint8Array(projectBundle.documents.bytes)], { type: 'application/pdf' })
-    downloadBlob(blob, `${projectName}_bundle.pdf`)
+    downloadPreparedArtifact({
+      bytes: new Uint8Array(projectBundle.documents.bytes),
+      filename: projectBundle.documents.name,
+      mediaType: projectBundle.documents.mediaType,
+    })
   }
 
   const handleDownloadMarkdown = () => {
     if (!projectBundle?.markdown.parts) return
-    const fullMarkdown = projectBundle.markdown.parts.map((p) => p.content).join('\n\n---\n\n')
-    const blob = new Blob([fullMarkdown], { type: 'text/markdown;charset=utf-8' })
-    downloadBlob(blob, `${projectName}_bundle.md`)
+
+    try {
+      downloadPreparedArtifact(prepareMarkdownDownload(projectName, projectBundle.markdown.parts))
+    } catch (error) {
+      setPackageError(error instanceof Error ? error.message : 'Markdown download could not be prepared.')
+    }
   }
 
   const handleDownloadManifest = () => {
     if (!manifestArtifact?.json) return
-    const blob = new Blob([manifestArtifact.json], { type: 'application/json;charset=utf-8' })
-    downloadBlob(blob, `${projectName}_manifest.json`)
+    downloadPreparedArtifact({
+      bytes: new TextEncoder().encode(manifestArtifact.json),
+      filename: `${projectName}-manifest.json`,
+      mediaType: 'application/json;charset=utf-8',
+    })
   }
 
-  const handleDownloadZipPackage = () => {
-    const zipData: Record<string, Uint8Array> = {}
+  const handleDownloadZipPackage = async () => {
+    if (!projectBundle || !manifestArtifact || isPackaging) return
 
-    if (projectBundle?.markdown.parts) {
-      const fullMarkdown = projectBundle.markdown.parts.map((p) => p.content).join('\n\n---\n\n')
-      zipData[`${projectName}_bundle.md`] = strToU8(fullMarkdown)
+    setIsPackaging(true)
+    setPackageError(null)
+
+    try {
+      // Let React paint the busy state before the synchronous ZIP encoder starts.
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 0))
+      downloadPreparedArtifact(prepareProjectPackage(projectName, projectBundle, manifestArtifact))
+    } catch (error) {
+      setPackageError(error instanceof Error ? error.message : 'The ZIP package could not be created.')
+    } finally {
+      setIsPackaging(false)
     }
-
-    if (projectBundle?.documents.bytes) {
-      zipData[`${projectName}_bundle.pdf`] = new Uint8Array(projectBundle.documents.bytes)
-    }
-
-    if (manifestArtifact?.json) {
-      zipData[`${projectName}_manifest.json`] = strToU8(manifestArtifact.json)
-    }
-
-    const zipped = zipSync(zipData)
-    const blob = new Blob([zipped.buffer as ArrayBuffer], { type: 'application/zip' })
-    downloadBlob(blob, `${projectName}_package.zip`)
   }
 
   return (
@@ -126,22 +151,37 @@ export function ResultsDashboard({
             <strong className="metric-badge__value text-muted">{excludedCount}</strong>
           </div>
           <div className="metric-badge">
-            <span className="metric-badge__label">Total Size</span>
+            <span className="metric-badge__label">Output Size</span>
             <strong className="metric-badge__value">
-              {markdownSnapshot ? formatBytes(markdownSnapshot.totalBytes) : '—'}
+              {totalOutputBytes > 0 ? formatBytes(totalOutputBytes) : '—'}
             </strong>
+          </div>
+          <div className="metric-badge">
+            <span className="metric-badge__label">Secret Policy</span>
+            <strong className="metric-badge__value">{SECRET_POLICY_LABELS[secretPolicy]}</strong>
           </div>
         </div>
 
         <div className="results-dashboard__download-bar">
-          <Button onClick={handleDownloadZipPackage} variant="primary" className="dl-btn dl-btn--zip-primary">
-            <ArchiveIcon /> Download Package (.ZIP)
+          <Button
+            aria-busy={isPackaging}
+            disabled={!projectBundle || !manifestArtifact || isPackaging}
+            onClick={() => void handleDownloadZipPackage()}
+            variant="primary"
+            className="dl-btn dl-btn--zip-primary"
+          >
+            <ArchiveIcon /> {isPackaging ? 'Packaging…' : 'Download Package (.ZIP)'}
           </Button>
 
           <div className="download-bar__sub-buttons">
-            <span className="download-bar__label">Single files:</span>
-            <Button onClick={handleDownloadMarkdown} variant="secondary" className="dl-btn dl-btn--sm">
-              <FilesIcon /> .MD
+            <span className="download-bar__label">Single outputs:</span>
+            <Button
+              onClick={handleDownloadMarkdown}
+              variant="secondary"
+              className="dl-btn dl-btn--sm"
+              title={markdownPartCount > 1 ? `Download ${markdownPartCount} Markdown parts as ZIP` : 'Download Markdown'}
+            >
+              <FilesIcon /> {markdownPartCount > 1 ? '.MD ZIP' : '.MD'}
             </Button>
             <Button onClick={handleDownloadPdf} variant="secondary" className="dl-btn dl-btn--sm">
               <FilesIcon /> .PDF
@@ -150,6 +190,8 @@ export function ResultsDashboard({
               <ArchiveIcon /> .JSON
             </Button>
           </div>
+
+          {packageError ? <p className="download-bar__error" role="alert">{packageError}</p> : null}
         </div>
       </header>
 

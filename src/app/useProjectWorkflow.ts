@@ -7,6 +7,7 @@ import type { ManifestArtifact } from '../core/manifest/types'
 import { createMarkdownArtifactSnapshot } from '../core/markdown/snapshot'
 import type { MarkdownArtifactSnapshot, MarkdownGenerationProgress } from '../core/markdown/types'
 import type { ProjectBundle } from '../core/output/types'
+import type { SecretHandlingMode } from '../core/security/types'
 import { analyzeVirtualFileSystem } from '../core/preflight/analyze'
 import { createManifestV1 } from '../core/manifest/generate'
 import { generateProjectBundle } from '../core/output/generate'
@@ -23,6 +24,7 @@ export function useProjectWorkflow() {
   const [phase, setPhase] = useState<ProcessingPhase>('parsing')
   const [statusMessage, setStatusMessage] = useState('Ready to acquire local files.')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [secretHandling, setSecretHandling] = useState<SecretHandlingMode>('redact')
   const abortController = useRef<AbortController | null>(null)
 
   const [preflightSelection] = useState<PreflightSelection>({
@@ -47,6 +49,7 @@ export function useProjectWorkflow() {
     setProgress(null)
     setPhase('parsing')
     setErrorMessage(null)
+    setSecretHandling('redact')
     setStatusMessage('Ready to acquire local files.')
     setState('idle')
   }, [])
@@ -101,7 +104,7 @@ export function useProjectWorkflow() {
 
       // Step 2: Manifest V1 creation if not already created
       let currentManifest = manifestArtifact
-      if (!currentManifest) {
+      if (!currentManifest || currentManifest.manifest.settings.secretHandling !== secretHandling) {
         currentManifest = await createManifestV1(
           fileSystem.current,
           currentReport,
@@ -109,7 +112,7 @@ export function useProjectWorkflow() {
           {
             projectName: importSnapshot?.root.name || 'project',
             outputMode: currentReport.recommendation.mode,
-            secretHandling: 'redact',
+            secretHandling,
           },
         )
         setManifestArtifact(currentManifest)
@@ -156,7 +159,7 @@ export function useProjectWorkflow() {
     } finally {
       abortController.current = null
     }
-  }, [importSnapshot, manifestArtifact, preflightReport, preflightSelection])
+  }, [importSnapshot, manifestArtifact, preflightReport, preflightSelection, secretHandling])
 
   return {
     state,
@@ -170,11 +173,13 @@ export function useProjectWorkflow() {
     phase,
     statusMessage,
     errorMessage,
+    secretHandling,
     handleImport,
     resetAll,
     startProcessing,
     cancelProcessing,
     setStatusMessage,
     setErrorMessage,
+    setSecretHandling,
   }
 }

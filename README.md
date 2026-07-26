@@ -4,7 +4,7 @@ AI Bundle Studio is a privacy-first, browser-based application for turning local
 
 ## Live demo
 
-Use the published application here: **[https://pietro-crc.github.io/FILE-BUNDLE-Studio/](https://pietro-crc.github.io/FILE-BUNDLE-Studio/)**
+Use the published application here: **[https://ai-bundle-studio.pcdev.workers.dev/](https://ai-bundle-studio.pcdev.workers.dev/)**
 
 It inspects the selected content locally and builds a consistent representation across:
 
@@ -22,7 +22,7 @@ AI Bundle Studio addresses that workflow by preserving the source tree, reportin
 
 ## Highlights
 
-- Local-only processing with no backend, account, analytics, telemetry, or document upload.
+- Local-only file processing with no backend, account, or document upload. Cookie-free Cloudflare Web Analytics collects aggregate site-usage metrics only.
 - Import from multiple files, directories, drag-and-drop, or an explicit ZIP archive.
 - Preflight analysis for format support, size, risk signals, and estimated output cost.
 - Normalized paths, deterministic identifiers, and SHA-256 integrity metadata.
@@ -40,7 +40,7 @@ AI Bundle Studio is engineered under a strict **Zero-Trust, Local-Only Security 
 ### 🔒 Core Security Pillars
 
 - **100% In-Browser Execution:** All file extraction, parsing, secret scanning, and document generation execute locally inside your browser engine. No files, code, or metadata ever leave your machine.
-- **Zero Telemetry & Zero Persistence:** No remote servers, backend APIs, analytics, tracking cookies, or browser storage persistence (`localStorage`/`IndexedDB`). Data exists solely in temporary memory while processing.
+- **Local Processing & Zero Project Persistence:** Source files and generated artifacts stay in temporary browser memory and are never transmitted to an application backend. Cookie-free Cloudflare Web Analytics collects aggregate site-usage metrics separately from the local processing workspace.
 - **Inert Processing & Defense-in-Depth:** Files are treated as untrusted input. Executables, Office macros, VBA scripts, spreadsheet formulas, and active HTML/SVG elements are never executed or rendered as live code.
 - **Defensive Resource Bounding:** Strict memory, file size, entry count, path depth, and decompression ratio ceilings protect against ZIP bombs, path traversal, and browser memory exhaustion.
 - **Secret Detection & Redaction:** Built-in scanner identifies private keys, API tokens, JWTs, and connection strings. Redaction applies strictly to generated derived outputs—your original source files are never mutated.

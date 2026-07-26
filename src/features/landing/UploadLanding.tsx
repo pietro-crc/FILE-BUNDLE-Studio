@@ -1,3 +1,4 @@
+import type { SecretHandlingMode } from '../../core/security/types'
 import type { ImportSessionSnapshot } from '../../core/vfs/snapshot'
 import type { ImportResult } from '../../core/vfs/types'
 import { Button } from '../../ui/Button'
@@ -12,6 +13,8 @@ interface UploadLandingProps {
   readonly onImport: (result: ImportResult, label: string) => void
   readonly onClear: () => void
   readonly onStartProcessing: () => void
+  readonly secretHandling: SecretHandlingMode
+  readonly onSecretHandlingChange: (mode: SecretHandlingMode) => void
   readonly onError: (message: string) => void
 }
 
@@ -22,6 +25,8 @@ export function UploadLanding({
   onImport,
   onClear,
   onStartProcessing,
+  onSecretHandlingChange,
+  secretHandling,
   onError,
 }: UploadLandingProps) {
   const hasProject = Boolean(snapshot && snapshot.fileCount > 0)
@@ -51,7 +56,22 @@ export function UploadLanding({
           {!hasProject ? (
             <SourceDropzone isBusy={isBusy} onError={onError} onImport={onImport} />
           ) : (
-            <SelectedSourceSummary onClear={onClear} snapshot={snapshot!} />
+            <>
+              <SelectedSourceSummary onClear={onClear} snapshot={snapshot!} />
+              <label className="studio-security-policy">
+                <span className="studio-security-policy__label">Secret handling</span>
+                <select
+                  aria-label="Secret handling"
+                  onChange={(event) => onSecretHandlingChange(event.target.value as SecretHandlingMode)}
+                  value={secretHandling}
+                >
+                  <option value="report-only">Report only</option>
+                  <option value="redact">Redact detected values</option>
+                  <option value="exclude">Exclude flagged files</option>
+                </select>
+                <small>Applied locally before Markdown and PDF representations are generated.</small>
+              </label>
+            </>
           )}
         </div>
 

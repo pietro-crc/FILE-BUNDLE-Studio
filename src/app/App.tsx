@@ -63,7 +63,9 @@ export function App() {
             onClear={workflow.resetAll}
             onError={(msg) => workflow.setErrorMessage(msg)}
             onImport={workflow.handleImport}
+            onSecretHandlingChange={workflow.setSecretHandling}
             onStartProcessing={() => void workflow.startProcessing()}
+            secretHandling={workflow.secretHandling}
             snapshot={workflow.importSnapshot}
             statusMessage={workflow.statusMessage}
           />

@@ -3904,3 +3904,51 @@ button.validation-pill:hover {
   border-top: 1px solid var(--color-border);
   background: var(--color-surface-muted);
 }
+
+/* Selected-project security policy */
+.studio-security-policy {
+  display: grid;
+  grid-template-columns: minmax(8rem, auto) minmax(12rem, 18rem);
+  align-items: center;
+  gap: 0.45rem 1rem;
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface-muted) 52%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+  border-radius: 12px;
+}
+
+.studio-security-policy__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.studio-security-policy select {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.studio-security-policy small {
+  grid-column: 1 / -1;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .studio-security-policy {
+    grid-template-columns: 1fr;
+  }
+}
+
+.download-bar__error {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--color-danger, #ef4444);
+  font-size: 0.75rem;
+}
