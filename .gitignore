@@ -13,3 +13,8 @@ test-results/
 .vscode/
 .idea/
 dist-pages/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example

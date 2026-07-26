@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview",
+    "preview": "npm run build && wrangler dev",
     "lint": "oxlint .",
     "typecheck": "tsc -b --pretty false",
     "test": "bash scripts/run-vitest-suite.sh regression",
@@ -31,7 +31,8 @@
     "benchmark:spreadsheet": "vitest run tests/benchmarks/spreadsheet.benchmark.test.ts --reporter=verbose",
     "benchmark:pdf-images": "vitest run tests/benchmarks/pdf-image.benchmark.test.ts --reporter=verbose",
     "benchmark:office": "vitest run tests/benchmarks/office.benchmark.test.ts --reporter=verbose",
-    "benchmark:security": "vitest run tests/benchmarks/security.benchmark.test.ts --reporter=verbose"
+    "benchmark:security": "vitest run tests/benchmarks/security.benchmark.test.ts --reporter=verbose",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "fflate": "0.8.3",
@@ -42,6 +43,7 @@
     "react-dom": "19.2.7"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.47.0",
     "@playwright/test": "1.61.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
@@ -55,6 +57,7 @@
     "oxlint": "1.71.0",
     "typescript": "6.0.3",
     "vite": "8.1.5",
-    "vitest": "4.1.10"
+    "vitest": "4.1.10",
+    "wrangler": "^4.114.0"
   }
 }
